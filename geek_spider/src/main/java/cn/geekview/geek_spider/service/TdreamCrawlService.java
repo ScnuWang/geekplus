@@ -11,5 +11,5 @@ public interface TdreamCrawlService {
     /**
      * 抓取任务
      */
-    void crawlTask(Date updateDateTime,Integer crawlFrequency) throws Exception;
+    void crawlTask(Date updateDateTime,Integer crawlIntervalTime);
 }

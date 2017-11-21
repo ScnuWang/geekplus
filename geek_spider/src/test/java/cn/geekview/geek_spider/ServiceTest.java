@@ -24,7 +24,7 @@ public class ServiceTest {
     public void test1(){
         try {
 //            tbService.initTask(1,new DateTime(2017,11,20,12,0,0).toDate(), Constant.TWENTY_FOUR_HOURS);
-            tbService.crawlTask(1,new DateTime(2017,11,20,12,0,0).toDate(), Constant.TWENTY_FOUR_HOURS);
+            tbService.crawlTask(new DateTime(2017,11,20,12,0,0).toDate(), Constant.TWENTY_FOUR_HOURS);
         } catch (Exception e) {
             e.printStackTrace();
         }
