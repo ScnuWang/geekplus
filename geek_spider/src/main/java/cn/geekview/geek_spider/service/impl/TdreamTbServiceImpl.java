@@ -4,6 +4,7 @@ import cn.geekview.geek_spider.entity.domain.TdreamTask;
 import cn.geekview.geek_spider.entity.domain.TdreamTbItem;
 import cn.geekview.geek_spider.entity.domain.TdreamTbProduct;
 import cn.geekview.geek_spider.entity.mapper.TdreamTaskMapper;
+import cn.geekview.geek_spider.entity.mapper.TdreamTbItemMapper;
 import cn.geekview.geek_spider.entity.mapper.TdreamTbProductMapper;
 import cn.geekview.geek_spider.service.TdreamCrawlService;
 import cn.geekview.geek_spider.util.CommonUtils;
@@ -21,7 +22,6 @@ import java.util.*;
 @Service("TdreamTbServiceImpl")
 public class TdreamTbServiceImpl implements TdreamCrawlService {
 
-
     private static String crawlProductlistUrl = "https://hstar-hi.alicdn.com/dream/ajax/getProjectList.htm?projectType=&type=6&sort=1&pageSize=100&page=";
 
     private static String crawlProductDetailUrl = "https://hstar-hi.alicdn.com/dream/ajax/getProjectForDetail.htm?id=";
@@ -36,8 +36,19 @@ public class TdreamTbServiceImpl implements TdreamCrawlService {
     @Autowired
     private TdreamTbProductMapper productMapper;
 
+    @Autowired
+    private TdreamTbItemMapper itemMapper;
+
+    /**
+     *
+     * @param updateDateTime 如果updateDateTime为空，默认为当前时间
+     * @param crawlFrequency 默认为24小时
+     */
     @Override
-    public void initTask() {
+    public void initTask(Date updateDateTime,Integer crawlFrequency) {
+        if (crawlFrequency == 0){
+            crawlFrequency = Constant.TWENTY_FOUR_HOURS;
+        }
         //获取产品列表数据
         TdreamTask task = null;
         Map<String,TdreamTask> urlMap = new HashMap();//！！！！测试高并发情况
@@ -60,12 +71,12 @@ public class TdreamTbServiceImpl implements TdreamCrawlService {
                     if(task == null){
                         task = new TdreamTask();
                         task.setOriginalId(id);
-                        task.setCrawlFrequency(Constant.TWENTY_FOUR_HOURS);
+                        task.setCrawlFrequency(crawlFrequency);
                         task.setCrawlStatus(1);
                         task.setCrawlUrl(productUrl);
-                        DateTime dateTime = new DateTime();
+                        DateTime dateTime = new DateTime(updateDateTime);
                         task.setCrawlTime(dateTime.toDate());
-                        task.setNextCrawlTime(dateTime.plusMinutes(Constant.TWENTY_FOUR_HOURS).toDate());
+                        task.setNextCrawlTime(dateTime.plusMinutes(crawlFrequency).toDate());
                         task.setWebsiteId(1);
                         urlMap.put(id,task);
                     }else{
@@ -85,24 +96,28 @@ public class TdreamTbServiceImpl implements TdreamCrawlService {
         }
     }
 
+    /**
+     *
+     * @param updateDateTime 如果updateDateTime为空，默认为当前时间
+     * @param crawlFrequency 默认为24小时
+     * @throws Exception 异常情况后续统一处理
+     */
     @Override
-    public void crawlTask(Integer websiteId, Date updateDateTime) throws ParseException {
-        List<TdreamTask> taskList = taskMapper.queryTaskList(1,1,new DateTime().plusMinutes(Constant.TWENTY_FOUR_HOURS).toDate(),new DateTime().plusMinutes(-Constant.TWENTY_FOUR_HOURS).toDate());
+    public void crawlTask(Date updateDateTime,Integer crawlFrequency) throws Exception {
+        if (crawlFrequency == 0){
+            crawlFrequency = Constant.TWENTY_FOUR_HOURS;
+        }
+        List<TdreamTask> taskList = taskMapper.queryTaskList(1,1,new DateTime().plusMinutes(crawlFrequency).toDate(),new DateTime().plusMinutes(-crawlFrequency).toDate());
         for (TdreamTask task : taskList) {
             String ceawlUrl = task.getCrawlUrl();
             String originalId = task.getOriginalId();
             String result = CommonUtils.httpRequest_Get(ceawlUrl);
-//            System.out.println(result);
-            //保存返回的结果到文档
-
-
-
             //解析结果数据
             JSONObject jsonObject = (JSONObject) JSONObject.parse(result);
             JSONObject rootObject = jsonObject.getJSONObject("data");
             TdreamTbProduct product = new TdreamTbProduct();
             product.setOriginalId(originalId);
-            product.setCrawlFrequency(Constant.TWENTY_FOUR_HOURS);
+            product.setCrawlFrequency(crawlFrequency);
             product.setProductName(rootObject.getString("name"));
             product.setProductDesc(rootObject.getString("content"));
             product.setProductUrl(productUrl+originalId);
@@ -111,7 +126,7 @@ public class TdreamTbServiceImpl implements TdreamCrawlService {
             product.setProductQrcode("https:"+rootObject.getString("qrcode"));
             product.setBeginDate(dateFormat.parse(rootObject.getString("begin_date")));
             product.setEndDate(dateFormat.parse(rootObject.getString("end_date")));
-            product.setUpdateDatetime(updateDateTime);
+            product.setUpdateDatetime(new DateTime(updateDateTime).toDate());
             switch (rootObject.getInteger("status_value")){
                 case 4:product.setStatusValue(2);product.setProductStatus("众筹中");break;
                 case 5:product.setStatusValue(4);product.setProductStatus("众筹失败");break;
@@ -149,13 +164,22 @@ public class TdreamTbServiceImpl implements TdreamCrawlService {
                     item.setItemPrice(itemObj.getBigDecimal("price"));
                     item.setItemSupport(itemObj.getInteger("support_person"));
                     item.setItemTotal(itemObj.getInteger("total"));
-                    item.setUpdateDatetime(updateDateTime);
+                    item.setUpdateDatetime(new DateTime(updateDateTime).toDate());
                     itemList.add(item);
                 }
                 product.setItemList(itemList);
             }
             //持久化到数据库
             productMapper.insert(product);
+            if(product.getItemList()!=null&&product.getItemList().size()>0){
+                itemMapper.insertRecordList(product.getPkId(),product.getItemList());
+            }
+            //根据主键修改任务的状态
+            task.setCrawlStatus(1);
+            DateTime dateTime = new DateTime(updateDateTime);
+            task.setCrawlTime(dateTime.toDate());
+            task.setNextCrawlTime(dateTime.plusMinutes(task.getCrawlFrequency()).toDate());
+            taskMapper.updateCrawlStatusByPrimaryKey(task);
         }
     }
 

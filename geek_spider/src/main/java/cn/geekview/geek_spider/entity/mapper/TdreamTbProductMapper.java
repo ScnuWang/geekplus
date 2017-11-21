@@ -2,6 +2,7 @@ package cn.geekview.geek_spider.entity.mapper;
 
 import cn.geekview.geek_spider.entity.domain.TdreamTbProduct;
 import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Options;
 
 public interface TdreamTbProductMapper {
     String insert = "insert into t_dream_tb_product (pk_id, original_id, crawl_frequency, \n" +
@@ -25,5 +26,7 @@ public interface TdreamTbProductMapper {
             "      #{remainDay,jdbcType=INTEGER}, #{personName,jdbcType=VARCHAR}, #{personDesc,jdbcType=VARCHAR}, \n" +
             "      #{personImage,jdbcType=VARCHAR})";
     @Insert(insert)
+    @Options(useGeneratedKeys = true,keyProperty = "pkId")//要利用返回的主键，需要指明这两个属性
     int insert(TdreamTbProduct product);
+
 }

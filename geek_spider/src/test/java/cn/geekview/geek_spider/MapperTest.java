@@ -2,6 +2,8 @@ package cn.geekview.geek_spider;
 
 import cn.geekview.geek_spider.entity.domain.TdreamTask;
 import cn.geekview.geek_spider.entity.mapper.TdreamTaskMapper;
+import cn.geekview.geek_spider.util.Constant;
+import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,14 +23,13 @@ public class MapperTest {
     @Test
     public void test1(){
         TdreamTask task = new TdreamTask();
-        task.setOriginalId("111");
-        task.setCrawlFrequency(50);
+        task.setPkId(1);
+        DateTime dateTime = new DateTime();
+        task.setCrawlTime(dateTime.toDate());
         task.setCrawlStatus(1);
-        task.setCrawlUrl("https://www.baidu.com");
-        task.setCrawlTime(new Date());
-        task.setNextCrawlTime(new Date());
-        task.setWebsiteId(1);
-        taskMapper.insert(task);
+        task.setNextCrawlTime(dateTime.plusMinutes(Constant.TWENTY_FOUR_HOURS).toDate());
+        taskMapper.updateCrawlStatusByPrimaryKey(task);
+//        taskMapper.insert(task);
     }
 
 }

@@ -7,9 +7,9 @@ public interface TdreamCrawlService {
     /**
      * 初始化任务
      */
-    void initTask();
+    void initTask(Date updateDateTime,Integer crawlFrequency);
     /**
      * 抓取任务
      */
-    void crawlTask(Integer websiteId, Date updateDateTime) throws ParseException;
+    void crawlTask(Date updateDateTime,Integer crawlFrequency) throws Exception;
 }
