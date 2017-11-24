@@ -12,8 +12,22 @@ public class Constant {
     public static final Integer TWO_HOURS = 2*60;
     public static final Integer TWENTY_FOUR_HOURS = 24*60;
 
-    public static final String CNY = "CNY";
     /**
-     * 抓取平台
+     * 抓取平台编号
      */
+    public static final Integer WEBSITE_ID_TAOBAO = 1;
+    public static final Integer WEBSITE_ID_JINGDONG = 2;
+    public static final Integer WEBSITE_ID_SUNING = 7;
+    public static final Integer WEBSITE_ID_XIAOMI = 15;
+
+    /**
+     * 抓取状态
+     */
+    public static final Integer CRAWL_STATUAS_WAITING = 1;
+    public static final Integer CRAWL_STATUAS_SUCCESS = 2;
+    public static final Integer CRAWL_STATUAS_EXCEPTION = 3;
+    public static final Integer CRAWL_STATUAS_STOP = 4;
+
+    public static final String CNY = "CNY";
+
 }

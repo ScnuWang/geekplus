@@ -37,7 +37,7 @@ public interface TdreamTaskMapper {
             @Result(property = "pkId",column = "pk_id",jdbcType = JdbcType.VARCHAR),
             @Result(property = "crawlFrequency",column = "crawl_frequency",jdbcType = JdbcType.VARCHAR),
     })
-    List<TdreamTask> queryTaskList(@Param("websiteId") Integer websiteId, @Param("crawlStatus") Integer crawlStatus, @Param("crawlTimeRight") Date crawlTimeRight, @Param("crawlTimeLeft") Date crawlTimeLeft);
+    List<TdreamTask> queryTaskList(@Param("websiteId") Integer websiteId, @Param("crawlStatus") Integer crawlStatus,@Param("crawlTimeLeft") Date crawlTimeLeft, @Param("crawlTimeRight") Date crawlTimeRight);
 
 
     String updateByPrimaryKey = "update t_dream_task set\n" +

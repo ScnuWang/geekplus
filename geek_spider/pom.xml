@@ -9,7 +9,7 @@
 	<packaging>jar</packaging>
 
 	<name>geek_spider</name>
-	<description>Crawl Data Project</description>
+	<description>Crawl Data Module</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>

@@ -95,7 +95,7 @@ public class TdreamTbServiceImpl implements TdreamCrawlService {
                 }
                 if(jsonArray.size()<1) break;
                 page++;
-                if(page>1) break;
+//                if(page>1) break;
             } catch (Exception e) {
                 e.printStackTrace();
                 logger.error(e.getMessage());
@@ -107,22 +107,18 @@ public class TdreamTbServiceImpl implements TdreamCrawlService {
         //将任务放入到数据库列表
         for (Map.Entry<String,TdreamTask> entry : urlMap.entrySet()) {
             task = entry.getValue();
+            //判断相同的任务是否已经存在
             taskMapper.insert(task);
         }
     }
 
     /**
-     *
      * @param updateDateTime 如果updateDateTime为空，默认为当前时间
-     * @param crawlIntervalTime 抓取间隔时间
      */
     @Override
-    public void crawlTask(Date updateDateTime,Integer crawlIntervalTime) {
-        //频率为24小时的任务从数据库查询，其他频率先从Redis中查询,以及修改redis
-
-
-
-        List<TdreamTask> taskList = taskMapper.queryTaskList(1,1,new DateTime().plusMinutes(crawlIntervalTime).toDate(),new DateTime().plusMinutes(-crawlIntervalTime).toDate());
+    public void crawlTask(Date updateDateTime) {
+        //抓取当前时间前后三分钟内将要被出发的任务
+        List<TdreamTask>  taskList = taskMapper.queryTaskList(Constant.WEBSITE_ID_TAOBAO,Constant.CRAWL_STATUAS_WAITING,new DateTime(updateDateTime).plusMinutes(-3).toDate(),new DateTime(updateDateTime).plusMinutes(3).toDate());
         for (TdreamTask task : taskList) {
             String ceawlUrl = task.getCrawlUrl();
             String originalId = task.getOriginalId();
