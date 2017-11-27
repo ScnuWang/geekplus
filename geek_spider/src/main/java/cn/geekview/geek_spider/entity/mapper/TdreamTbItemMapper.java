@@ -1,6 +1,6 @@
 package cn.geekview.geek_spider.entity.mapper;
 
-import cn.geekview.geek_spider.entity.domain.TdreamTbItem;
+import cn.geekview.geek_spider.entity.model.TdreamTbItem;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

@@ -1,8 +1,8 @@
 package cn.geekview.geek_spider.service.impl;
 
-import cn.geekview.geek_spider.entity.domain.TdreamTask;
-import cn.geekview.geek_spider.entity.domain.TdreamTbItem;
-import cn.geekview.geek_spider.entity.domain.TdreamTbProduct;
+import cn.geekview.geek_spider.entity.model.TdreamTask;
+import cn.geekview.geek_spider.entity.model.TdreamTbItem;
+import cn.geekview.geek_spider.entity.model.TdreamTbProduct;
 import cn.geekview.geek_spider.entity.mapper.TdreamTaskMapper;
 import cn.geekview.geek_spider.entity.mapper.TdreamTbItemMapper;
 import cn.geekview.geek_spider.entity.mapper.TdreamTbProductMapper;

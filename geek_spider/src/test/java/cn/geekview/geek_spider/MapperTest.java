@@ -1,6 +1,6 @@
 package cn.geekview.geek_spider;
 
-import cn.geekview.geek_spider.entity.domain.TdreamTask;
+import cn.geekview.geek_spider.entity.model.TdreamTask;
 import cn.geekview.geek_spider.entity.mapper.TdreamTaskMapper;
 import cn.geekview.geek_spider.util.Constant;
 import org.joda.time.DateTime;
@@ -9,9 +9,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.junit4.SpringRunner;
-
-import java.util.Date;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest

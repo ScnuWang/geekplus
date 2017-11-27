@@ -1,4 +1,4 @@
-package cn.geekview.geek_analysis.config;
+package cn.geekview.config;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;

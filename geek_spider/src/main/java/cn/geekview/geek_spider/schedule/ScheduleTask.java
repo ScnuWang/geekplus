@@ -33,6 +33,12 @@ public class ScheduleTask {
         tbService.initTask(new Date(), Constant.TWO_HOURS);
     }
 
+    //每隔2个小时触发一次
+    @Scheduled(cron = "0 0-59/5 * * * ?")
+    public void initTask_FIVE_MINUTES(){
+        tbService.initTask(new Date(), Constant.FIVE_MINUTES);
+    }
+
 
 
     //每隔5分钟触发一次

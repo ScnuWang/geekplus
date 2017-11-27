@@ -1,4 +1,4 @@
-package cn.geekview.geek_spider.entity.domain;
+package cn.geekview.geek_spider.entity.model;
 
 import java.math.BigDecimal;
 import java.util.Date;

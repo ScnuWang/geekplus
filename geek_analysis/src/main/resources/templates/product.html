@@ -1,0 +1,84 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>产品变化</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <script src="http://cdn.hcharts.cn/highcharts/highcharts.js"></script>
+    <link th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.css}" rel="stylesheet"></link>
+    <script th:src="@{/webjars/bootstrap/3.3.7/js/bootstrap.min.js}"></script>
+    <script th:src="@{/webjars/jquery/1.11.1/jquery.js}"></script>
+</head>
+<body>
+    <div id="container" style="width: 600px;height:400px;"></div>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        var v = /*[[${#dates.format(products[0].updateDatetime, 'yyyy/MM/dd HH:mm')}]]*/ '2017/11/27 17:27'
+        console.debug(v);
+        var updateDatetime = [];
+        var supportCount = [];
+        var focusCount = [];
+        var targetAmount = [];
+        var rasiedAmount = [];
+        var products = /*[[${products}]]*/ 'null';
+        for (var i =0;i< products.length;i++){
+            updateDatetime.push(products[i].updateDatetime);
+            supportCount.push(products[i].supportCount);
+            focusCount.push(products[i].focusCount);
+            targetAmount.push(products[i].targetAmount);
+            rasiedAmount.push(products[i].rasiedAmount)
+        }
+        var chart = Highcharts.chart('container', {
+            title: {
+                text: /*[[${products[0].productName}]]*/ '极客视界'
+            },
+            subtitle: {
+                text: '数据来源：www.geekview.cn'
+            },
+            xAxis:{
+                type:'datetime',
+                crosshair: true,
+                pointInterval:/*[[${products[0].crawlFrequency}]]*/ '5',
+                pointStart:/*[[${#dates.format(products[0].updateDatetime, 'yyyy/MM/dd HH:mm')}]]*/ '0000/00/00 00:00'
+            },
+            yAxis: {
+                title: {
+                    text: '众筹金额变化'
+                }
+            },
+            legend: {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'middle'
+            },
+            series: [{
+                name: '支持人数',
+                data: supportCount
+            }, {
+                name: '关注人数',
+                data: focusCount
+            }, {
+                name: '众筹金额',
+                data: rasiedAmount
+            }, {
+                name: '目标金额',
+                data: targetAmount
+            }],
+            responsive: {
+                rules: [{
+                    condition: {
+                        maxWidth: 500
+                    },
+                    chartOptions: {
+                        legend: {
+                            layout: 'horizontal',
+                            align: 'center',
+                            verticalAlign: 'bottom'
+                        }
+                    }
+                }]
+            }
+        });
+        /*]]>*/
+    </script>
+</body>
+</html>

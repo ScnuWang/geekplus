@@ -1,6 +1,6 @@
 package cn.geekview.geek_spider.entity.mapper;
 
-import cn.geekview.geek_spider.entity.domain.TdreamTbProduct;
+import cn.geekview.geek_spider.entity.model.TdreamTbProduct;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Options;
 

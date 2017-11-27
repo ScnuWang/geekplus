@@ -1,4 +1,4 @@
-package cn.geekview.geek_spider.schedule;
+package cn.geekview.schedule;
 
 import org.springframework.stereotype.Component;
 

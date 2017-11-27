@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.geekview.entity.mapper.TdreamTbProductMapper">
+  <resultMap id="BaseResultMap" type="cn.geekview.entity.model.TdreamTbProduct">
+    <id column="pk_id" jdbcType="INTEGER" property="pkId" />
+    <result column="original_id" jdbcType="VARCHAR" property="originalId" />
+    <result column="crawl_frequency" jdbcType="INTEGER" property="crawlFrequency" />
+    <result column="product_name" jdbcType="VARCHAR" property="productName" />
+    <result column="product_desc" jdbcType="VARCHAR" property="productDesc" />
+    <result column="product_url" jdbcType="VARCHAR" property="productUrl" />
+    <result column="product_image" jdbcType="VARCHAR" property="productImage" />
+    <result column="product_video" jdbcType="VARCHAR" property="productVideo" />
+    <result column="product_qrcode" jdbcType="VARCHAR" property="productQrcode" />
+    <result column="begin_date" jdbcType="TIMESTAMP" property="beginDate" />
+    <result column="end_date" jdbcType="TIMESTAMP" property="endDate" />
+    <result column="update_datetime" jdbcType="TIMESTAMP" property="updateDatetime" />
+    <result column="product_status" jdbcType="VARCHAR" property="productStatus" />
+    <result column="status_value" jdbcType="INTEGER" property="statusValue" />
+    <result column="forever_value" jdbcType="INTEGER" property="foreverValue" />
+    <result column="focus_count" jdbcType="INTEGER" property="focusCount" />
+    <result column="support_count" jdbcType="INTEGER" property="supportCount" />
+    <result column="currency_sign" jdbcType="VARCHAR" property="currencySign" />
+    <result column="original_target_amount" jdbcType="DECIMAL" property="originalTargetAmount" />
+    <result column="original_rasied_amount" jdbcType="DECIMAL" property="originalRasiedAmount" />
+    <result column="target_amount" jdbcType="DECIMAL" property="targetAmount" />
+    <result column="rasied_amount" jdbcType="DECIMAL" property="rasiedAmount" />
+    <result column="finish_percent" jdbcType="INTEGER" property="finishPercent" />
+    <result column="remain_day" jdbcType="INTEGER" property="remainDay" />
+    <result column="person_name" jdbcType="VARCHAR" property="personName" />
+    <result column="person_desc" jdbcType="VARCHAR" property="personDesc" />
+    <result column="person_image" jdbcType="VARCHAR" property="personImage" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="reserve1" jdbcType="VARCHAR" property="reserve1" />
+    <result column="reserve2" jdbcType="VARCHAR" property="reserve2" />
+    <result column="reserve3" jdbcType="VARCHAR" property="reserve3" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    pk_id, original_id, crawl_frequency, product_name, product_desc, product_url, product_image, 
+    product_video, product_qrcode, begin_date, end_date, update_datetime, product_status, 
+    status_value, forever_value, focus_count, support_count, currency_sign, original_target_amount, 
+    original_rasied_amount, target_amount, rasied_amount, finish_percent, remain_day, 
+    person_name, person_desc, person_image, update_time, reserve1, reserve2, reserve3
+  </sql>
+
+  <select id="queryProductPriceTrend" resultMap="BaseResultMap">
+      SELECT original_id,product_name,product_url,update_datetime,product_status,status_value,focus_count,support_count,target_amount,rasied_amount
+      FROM t_dream_tb_product
+      WHERE
+        crawl_frequency = #{crawlFrequence,jdbcType=INTEGER}
+      AND
+        original_id = #{originalId,jdbcType=VARCHAR}
+  </select>
+
+</mapper>

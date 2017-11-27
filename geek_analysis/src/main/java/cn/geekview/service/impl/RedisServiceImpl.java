@@ -1,4 +1,4 @@
-package cn.geekview.geek_analysis.service.impl;
+package cn.geekview.service.impl;
 
 
 import org.springframework.beans.factory.annotation.Autowired;

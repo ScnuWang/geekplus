@@ -1,6 +1,6 @@
 package cn.geekview.geek_spider.entity.mapper;
 
-import cn.geekview.geek_spider.entity.domain.TdreamTask;
+import cn.geekview.geek_spider.entity.model.TdreamTask;
 import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.type.JdbcType;
 
