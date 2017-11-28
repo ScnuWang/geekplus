@@ -96,7 +96,6 @@ public class TdreamTbServiceImpl implements TdreamCrawlService {
                     }
                 }
                 page++;
-                if(page>5) break;
             } catch (Exception e) {
                 e.printStackTrace();
                 logger.error(e.getMessage());
