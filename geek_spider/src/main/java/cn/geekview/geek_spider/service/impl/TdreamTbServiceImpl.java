@@ -107,7 +107,9 @@ public class TdreamTbServiceImpl implements TdreamCrawlService {
         //将任务放入到数据库列表
         for (Map.Entry<String,TdreamTask> entry : urlMap.entrySet()) {
             task = entry.getValue();
-            //判断相同的任务是否已经存在
+            //根据平台编号、项目原始ID、抓取频率、抓取状态判断相同的任务是否已经存在，之前设计的将停止抓取的任务删除，改为放在另外一张表中
+            //将任务表缓存在Redis中，在插入之前判断是否已经存在
+
             taskMapper.insert(task);
         }
     }

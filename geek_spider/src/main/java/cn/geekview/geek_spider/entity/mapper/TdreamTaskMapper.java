@@ -47,4 +47,6 @@ public interface TdreamTaskMapper {
             "    where pk_id = #{pkId,jdbcType=INTEGER}";
     @Update(updateByPrimaryKey)
     int updateCrawlStatusByPrimaryKey(TdreamTask task);
+
+
 }

@@ -3,17 +3,41 @@
 <head>
     <title>产品变化</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <script th:src="@{/webjars/jquery/1.11.1/jquery.js}"></script>
     <script src="http://cdn.hcharts.cn/highcharts/highcharts.js"></script>
+    <script src="https://img.hcharts.cn/highcharts/modules/exporting.js"></script>
+    <script src="https://img.hcharts.cn/highcharts/modules/series-label.js"></script>
+    <script src="https://img.hcharts.cn/highcharts/modules/oldie.js"></script>
+    <script src="https://img.hcharts.cn/highcharts-plugins/highcharts-zh_CN.js"></script>
     <link th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.css}" rel="stylesheet"></link>
     <script th:src="@{/webjars/bootstrap/3.3.7/js/bootstrap.min.js}"></script>
-    <script th:src="@{/webjars/jquery/1.11.1/jquery.js}"></script>
 </head>
 <body>
     <div id="container" style="width: 600px;height:400px;"></div>
     <script th:inline="javascript">
         /*<![CDATA[*/
-        var v = /*[[${#dates.format(products[0].updateDatetime, 'yyyy/MM/dd HH:mm')}]]*/ '2017/11/27 17:27'
-        console.debug(v);
+        /*格式化时间*/
+        Date.prototype.format = function(fmt) {
+            var o = {
+                "M+" : this.getMonth()+1,                 //月份
+                "d+" : this.getDate(),                    //日
+                "h+" : this.getHours(),                   //小时
+                "m+" : this.getMinutes(),                 //分
+                "s+" : this.getSeconds(),                 //秒
+                "q+" : Math.floor((this.getMonth()+3)/3), //季度
+                "S"  : this.getMilliseconds()             //毫秒
+            };
+            if(/(y+)/.test(fmt)) {
+                fmt=fmt.replace(RegExp.$1, (this.getFullYear()+"").substr(4 - RegExp.$1.length));
+            }
+            for(var k in o) {
+                if(new RegExp("("+ k +")").test(fmt)){
+                    fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));
+                }
+            }
+            return fmt;
+        };
+
         var updateDatetime = [];
         var supportCount = [];
         var focusCount = [];
@@ -21,24 +45,25 @@
         var rasiedAmount = [];
         var products = /*[[${products}]]*/ 'null';
         for (var i =0;i< products.length;i++){
-            updateDatetime.push(products[i].updateDatetime);
+            updateDatetime.push(new Date(products[i].updateDatetime).format("MM/dd hh:mm"));
             supportCount.push(products[i].supportCount);
             focusCount.push(products[i].focusCount);
             targetAmount.push(products[i].targetAmount);
             rasiedAmount.push(products[i].rasiedAmount)
         }
         var chart = Highcharts.chart('container', {
+            credits: {/*去除版本信息*/
+                enabled: false
+            },
             title: {
                 text: /*[[${products[0].productName}]]*/ '极客视界'
             },
             subtitle: {
                 text: '数据来源：www.geekview.cn'
             },
-            xAxis:{
-                type:'datetime',
-                crosshair: true,
-                pointInterval:/*[[${products[0].crawlFrequency}]]*/ '5',
-                pointStart:/*[[${#dates.format(products[0].updateDatetime, 'yyyy/MM/dd HH:mm')}]]*/ '0000/00/00 00:00'
+            xAxis: {
+                categories: updateDatetime,
+                crosshair: true
             },
             yAxis: {
                 title: {
@@ -63,6 +88,9 @@
                 name: '目标金额',
                 data: targetAmount
             }],
+            tooltip: {
+                shared: true
+            },
             responsive: {
                 rules: [{
                     condition: {
@@ -70,9 +98,9 @@
                     },
                     chartOptions: {
                         legend: {
-                            layout: 'horizontal',
-                            align: 'center',
-                            verticalAlign: 'bottom'
+                            layout: 'horizontal',/*水平布局*/
+                            align: 'center',/*设定图例在图表区中的水平对齐方式*/
+                            verticalAlign: 'bottom'/*设定图例在图表区中的垂直对齐方式*/
                         }
                     }
                 }]
