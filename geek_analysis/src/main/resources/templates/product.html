@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>产品变化</title>
+    <title>产品详情</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <script th:src="@{/webjars/jquery/1.11.1/jquery.js}"></script>
     <script src="http://cdn.hcharts.cn/highcharts/highcharts.js"></script>
@@ -13,7 +13,12 @@
     <script th:src="@{/webjars/bootstrap/3.3.7/js/bootstrap.min.js}"></script>
 </head>
 <body>
-    <div id="container" style="width: 600px;height:400px;"></div>
+    <div style="display: flex;justify-content: center;">
+        <div id="amount"></div>
+        <div id="people"></div>
+        <div id="people2"></div>
+    </div>
+
     <script th:inline="javascript">
         /*<![CDATA[*/
         /*格式化时间*/
@@ -51,7 +56,7 @@
             targetAmount.push(products[i].targetAmount);
             rasiedAmount.push(products[i].rasiedAmount)
         }
-        var chart = Highcharts.chart('container', {
+        $("#amount").highcharts({
             credits: {/*去除版本信息*/
                 enabled: false
             },
@@ -76,17 +81,115 @@
                 verticalAlign: 'middle'
             },
             series: [{
-                name: '支持人数',
-                data: supportCount
-            }, {
-                name: '关注人数',
-                data: focusCount
-            }, {
                 name: '众筹金额',
-                data: rasiedAmount
+                data: rasiedAmount,
+                color:'#9B30FF'
             }, {
                 name: '目标金额',
-                data: targetAmount
+                data: targetAmount,
+                color:'#87CEFF'
+            }],
+            tooltip: {
+                shared: true
+            },
+            responsive: {
+                rules: [{
+                    condition: {
+                        maxWidth: 500
+                    },
+                    chartOptions: {
+                        legend: {
+                            layout: 'horizontal',/*水平布局*/
+                            align: 'center',/*设定图例在图表区中的水平对齐方式*/
+                            verticalAlign: 'bottom'/*设定图例在图表区中的垂直对齐方式*/
+                        }
+                    }
+                }]
+            }
+        });
+        $("#people").highcharts({
+            credits: {/*去除版本信息*/
+                enabled: false
+            },
+            title: {
+                text: /*[[${products[0].productName}]]*/ '极客视界'
+            },
+            subtitle: {
+                text: '数据来源：www.geekview.cn'
+            },
+            xAxis: {
+                categories: updateDatetime,
+                crosshair: true
+            },
+            yAxis: {
+                title: {
+                    text: '支持人数变化'
+                }
+            },
+            legend: {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'middle'
+            },
+            series: [{
+                name: '支持人数',
+                data: supportCount,
+                color: '#B3EE3A'
+            }, {
+                name: '关注人数',
+                data: focusCount,
+                color: '#98FB98'
+            }],
+            tooltip: {
+                shared: true
+            },
+            responsive: {
+                rules: [{
+                    condition: {
+                        maxWidth: 500
+                    },
+                    chartOptions: {
+                        legend: {
+                            layout: 'horizontal',/*水平布局*/
+                            align: 'center',/*设定图例在图表区中的水平对齐方式*/
+                            verticalAlign: 'bottom'/*设定图例在图表区中的垂直对齐方式*/
+                        }
+                    }
+                }]
+            }
+        });
+        $("#people2").highcharts({
+            credits: {/*去除版本信息*/
+                enabled: false
+            },
+            title: {
+                text: /*[[${products[0].productName}]]*/ '极客视界'
+            },
+            subtitle: {
+                text: '数据来源：www.geekview.cn'
+            },
+            xAxis: {
+                categories: updateDatetime,
+                crosshair: true
+            },
+            yAxis: {
+                title: {
+                    text: '支持人数变化'
+                }
+            },
+            legend: {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'middle'
+            },
+            series: [{
+                name: '支持人数',
+                data: supportCount,
+                color: '#B3EE3A'
+            }, {
+                name: '关注人数',
+                data: focusCount,
+                color: '#98FB98'
             }],
             tooltip: {
                 shared: true

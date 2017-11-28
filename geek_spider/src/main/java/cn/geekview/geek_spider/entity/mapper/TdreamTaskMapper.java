@@ -22,7 +22,7 @@ public interface TdreamTaskMapper {
     @Insert(insert)
     int insert(TdreamTask task);
 
-    String queryTaskList = "select pk_id, crawl_url, crawl_frequency, crawl_status, crawl_time, next_crawl_time, original_id, \n" +
+    String queryTaskListByCrawlInterval = "select pk_id, crawl_url, crawl_frequency, crawl_status, crawl_time, next_crawl_time, original_id, \n" +
             "      website_id from t_dream_task" +
             "      where " +
             "      website_id = #{websiteId,jdbcType=INTEGER}\n" +
@@ -30,14 +30,22 @@ public interface TdreamTaskMapper {
             "      and next_crawl_time < #{crawlTimeRight,jdbcType=TIMESTAMP}" +
             "      and next_crawl_time > #{crawlTimeLeft,jdbcType=TIMESTAMP}" ;
 
-    @Select(queryTaskList)
+    /**
+     * 查询即将被抓取的任务
+     * @param websiteId
+     * @param crawlStatus
+     * @param crawlTimeLeft
+     * @param crawlTimeRight
+     * @return
+     */
+    @Select(queryTaskListByCrawlInterval)
     @Results({
             @Result(property = "crawlUrl",column = "crawl_url",jdbcType = JdbcType.VARCHAR),
             @Result(property = "originalId",column = "original_id",jdbcType = JdbcType.VARCHAR),
             @Result(property = "pkId",column = "pk_id",jdbcType = JdbcType.VARCHAR),
             @Result(property = "crawlFrequency",column = "crawl_frequency",jdbcType = JdbcType.VARCHAR),
     })
-    List<TdreamTask> queryTaskList(@Param("websiteId") Integer websiteId, @Param("crawlStatus") Integer crawlStatus,@Param("crawlTimeLeft") Date crawlTimeLeft, @Param("crawlTimeRight") Date crawlTimeRight);
+    List<TdreamTask> queryTaskListByCrawlInterval(@Param("websiteId") Integer websiteId, @Param("crawlStatus") Integer crawlStatus,@Param("crawlTimeLeft") Date crawlTimeLeft, @Param("crawlTimeRight") Date crawlTimeRight);
 
 
     String updateByPrimaryKey = "update t_dream_task set\n" +
@@ -45,8 +53,25 @@ public interface TdreamTaskMapper {
             "      crawl_time = #{crawlTime,jdbcType=TIMESTAMP},\n" +
             "      next_crawl_time = #{nextCrawlTime,jdbcType=TIMESTAMP}\n" +
             "    where pk_id = #{pkId,jdbcType=INTEGER}";
+
+    /**
+     * 修改抓取任务
+     * @param task
+     * @return
+     */
     @Update(updateByPrimaryKey)
     int updateCrawlStatusByPrimaryKey(TdreamTask task);
 
+
+    String queryAllTaskList = "select website_id,original_id,crawl_status,crawl_frequency" +
+            "  from t_dream_task" ;
+
+    @Select(queryAllTaskList)
+    @Results({
+            @Result(property = "websiteId",column = "website_id",jdbcType = JdbcType.INTEGER),
+            @Result(property = "originalId",column = "original_id",jdbcType = JdbcType.VARCHAR),
+            @Result(property = "crawlFrequency",column = "crawl_frequency",jdbcType = JdbcType.INTEGER),
+    })
+    List<TdreamTask> queryAllTaskList();
 
 }

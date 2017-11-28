@@ -25,7 +25,7 @@ public class TdreamTbServiceImpl implements TdreamCrawlService {
 
     protected Logger logger = Logger.getLogger(this.getClass());
 
-    private static String crawlProductlistUrl = "https://hstar-hi.alicdn.com/dream/ajax/getProjectList.htm?projectType=&type=6&sort=1&pageSize=100&page=";
+    private static String preCrawlProductlistUrl = "https://hstar-hi.alicdn.com/dream/ajax/getProjectList.htm?projectType=&type=6&sort=1&pageSize=100&page=";
 
     private static String crawlProductDetailUrl = "https://hstar-hi.alicdn.com/dream/ajax/getProjectForDetail.htm?id=";
 
@@ -60,13 +60,15 @@ public class TdreamTbServiceImpl implements TdreamCrawlService {
         TdreamTask task = null;
         Map<String,TdreamTask> urlMap = new ConcurrentHashMap<>();//！！！！测试高并发情况
         int page= 1;
+        String crawlProductlistUrl = null;
         while (true){
             try {
-                crawlProductlistUrl = crawlProductlistUrl+page;
+                crawlProductlistUrl = preCrawlProductlistUrl+page;
                 String result = CommonUtils.httpRequest_Get(crawlProductlistUrl);
                 JSONObject jsonObject = (JSONObject) JSONObject.parse(result);
                 JSONArray jsonArray = jsonObject.getJSONArray("data");
                 int size = jsonArray.size();
+                if(size<1) break;
                 for(int i=0;i<size;i++){
                     JSONObject entity = jsonArray.getJSONObject(i);
                     //获取单个产品的原始编号
@@ -93,24 +95,28 @@ public class TdreamTbServiceImpl implements TdreamCrawlService {
                         }
                     }
                 }
-                if(jsonArray.size()<1) break;
                 page++;
-//                if(page>1) break;
+                if(page>5) break;
             } catch (Exception e) {
                 e.printStackTrace();
                 logger.error(e.getMessage());
                 String subject = "初始化淘宝任务异常：" +updateDateTime+"------->"+crawlFrequency;
                 String content = "平台：淘宝，抓取频率："+crawlFrequency+"抓取地址："+crawlProductlistUrl+"错误信息："+e.getMessage();
-                mailService.sendMail(subject,e.getMessage());
+                mailService.sendMail(subject,content);
             }
         }
-        //将任务放入到数据库列表
+        //持久化到数据库
+        /**
+         * 1、判断任务表里是否已经存在相同的任务
+         */
         for (Map.Entry<String,TdreamTask> entry : urlMap.entrySet()) {
             task = entry.getValue();
-            //根据平台编号、项目原始ID、抓取频率、抓取状态判断相同的任务是否已经存在，之前设计的将停止抓取的任务删除，改为放在另外一张表中
+            //根据平台编号、项目原始ID、抓取频率判断相同的任务是否已经存在
             //将任务表缓存在Redis中，在插入之前判断是否已经存在
-
-            taskMapper.insert(task);
+            List<TdreamTask> taskList = taskMapper.queryAllTaskList();
+            if (!taskList.contains(task)){//覆写TdreamTask的equals方法
+                taskMapper.insert(task);
+            }
         }
     }
 
@@ -119,8 +125,8 @@ public class TdreamTbServiceImpl implements TdreamCrawlService {
      */
     @Override
     public void crawlTask(Date updateDateTime) {
-        //抓取当前时间前后三分钟内将要被出发的任务
-        List<TdreamTask>  taskList = taskMapper.queryTaskList(Constant.WEBSITE_ID_TAOBAO,Constant.CRAWL_STATUAS_WAITING,new DateTime(updateDateTime).plusMinutes(-3).toDate(),new DateTime(updateDateTime).plusMinutes(3).toDate());
+        //预设抓取当前时间前后三分钟内将要被出发的任务
+        List<TdreamTask>  taskList = taskMapper.queryTaskListByCrawlInterval(Constant.WEBSITE_ID_TAOBAO,Constant.CRAWL_STATUAS_WAITING,new DateTime(updateDateTime).plusMinutes(-3).toDate(),new DateTime(updateDateTime).plusMinutes(3).toDate());
         for (TdreamTask task : taskList) {
             String ceawlUrl = task.getCrawlUrl();
             String originalId = task.getOriginalId();
@@ -142,14 +148,15 @@ public class TdreamTbServiceImpl implements TdreamCrawlService {
                 product.setBeginDate(dateFormat.parse(rootObject.getString("begin_date")));
                 product.setEndDate(dateFormat.parse(rootObject.getString("end_date")));
                 product.setUpdateDatetime(new DateTime(updateDateTime).toDate());
+                //设置任务状态，除了预热中、众筹中的项目均不再自动抓取
                 switch (rootObject.getInteger("status_value")){
-                    case 4:product.setStatusValue(2);product.setProductStatus("众筹中");break;
-                    case 5:product.setStatusValue(4);product.setProductStatus("众筹失败");break;
+                    case 4:product.setStatusValue(2);product.setProductStatus("众筹中");task.setCrawlStatus(1);break;
+                    case 5:product.setStatusValue(4);product.setProductStatus("众筹失败");task.setCrawlStatus(2);break;
                     case 6:
                     case 8:
-                    case 9:product.setProductStatus("众筹成功");product.setStatusValue(3);break;
-                    case 20:product.setProductStatus("预热中");product.setStatusValue(1);
-                    default:product.setProductStatus("众筹异常");product.setStatusValue(5);
+                    case 9:product.setProductStatus("众筹成功");product.setStatusValue(3);task.setCrawlStatus(2);break;
+                    case 20:product.setProductStatus("预热中");product.setStatusValue(1);task.setCrawlStatus(1);
+                    default:product.setProductStatus("众筹异常");product.setStatusValue(5);task.setCrawlStatus(3);
                 }
                 product.setForeverValue(0);//是否为永久众筹（1：是  0：否）
                 product.setFocusCount(rootObject.getInteger("focus_count"));
@@ -190,7 +197,6 @@ public class TdreamTbServiceImpl implements TdreamCrawlService {
                     itemMapper.insertRecordList(product.getPkId(),product.getItemList());
                 }
                 //根据主键修改任务的状态
-                task.setCrawlStatus(1);
                 DateTime dateTime = new DateTime(updateDateTime);
                 task.setCrawlTime(dateTime.toDate());
                 task.setNextCrawlTime(dateTime.plusMinutes(task.getCrawlFrequency()).toDate());

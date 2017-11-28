@@ -147,23 +147,14 @@ public class TdreamTask {
         if (o == null || getClass() != o.getClass()) return false;
 
         TdreamTask task = (TdreamTask) o;
-
-        if (!crawlUrl.equals(task.crawlUrl)) return false;
         if (!crawlFrequency.equals(task.crawlFrequency)) return false;
-        if (!crawlStatus.equals(task.crawlStatus)) return false;
-        if (!crawlTime.equals(task.crawlTime)) return false;
-        if (!nextCrawlTime.equals(task.nextCrawlTime)) return false;
         if (!originalId.equals(task.originalId)) return false;
         return websiteId.equals(task.websiteId);
     }
 
     @Override
     public int hashCode() {
-        int result = crawlUrl.hashCode();
-        result = 31 * result + crawlFrequency.hashCode();
-        result = 31 * result + crawlStatus.hashCode();
-        result = 31 * result + crawlTime.hashCode();
-        result = 31 * result + nextCrawlTime.hashCode();
+        int result = crawlFrequency.hashCode();
         result = 31 * result + originalId.hashCode();
         result = 31 * result + websiteId.hashCode();
         return result;
