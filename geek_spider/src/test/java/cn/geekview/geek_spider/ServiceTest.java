@@ -23,7 +23,7 @@ public class ServiceTest {
     @Test
     public void test1(){
         try {
-//            tbService.initTask(new Date(), Constant.FIVE_MINUTES);
+            tbService.initTask(new Date(), Constant.FIVE_MINUTES);
 //            tbService.crawlTask(new DateTime(2017,11,24,12,0,0).toDate());
 //            tbService.crawlTask(new Date());
         } catch (Exception e) {

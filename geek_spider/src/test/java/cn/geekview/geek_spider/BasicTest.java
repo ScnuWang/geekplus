@@ -15,9 +15,10 @@ import java.util.concurrent.Executors;
 public class BasicTest {
         @Test
         public void test(){
-            long n = new DateTime(2017,11,29,11,36,00).toDate().getTime();
-            long m = new DateTime(2017,11,28,22,00,00).toDate().getTime();
-            System.out.println((n-m)/(120*60*1000)+1);
+            long n = new DateTime(2017,11,28,11,36,00).toDate().getTime();
+            long m = new DateTime(2017,11,28,10,00,00).toDate().getTime();
+
+            System.out.println((int)Math.ceil((n-m)/(120*60*1000.0))+1);
         }
 
 

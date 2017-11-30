@@ -283,8 +283,8 @@ public class TdreamTbServiceImpl implements TdreamCrawlService {
         for (TdreamTask tdreamTask : listByCrawlStatus) {
 
             long m = tdreamTask.getCrawlTime().getTime();
-            //已经错过的抓取次数(加2：表示在本次修改之后下一次执行)
-            int t = (int)((n-m)/(tdreamTask.getCrawlFrequency()*60*1000))+1;
+            //已经错过的抓取次数
+            int t = (int)Math.ceil((n-m)/(tdreamTask.getCrawlFrequency()*60*1000.0))+1;
             Date nextCrawlTime = new DateTime(tdreamTask.getCrawlTime()).plusMinutes(tdreamTask.getCrawlFrequency()*t).toDate();
             tdreamTask.setNextCrawlTime(nextCrawlTime);
             taskMapper.updateCrawlStatusByPrimaryKey(tdreamTask);
