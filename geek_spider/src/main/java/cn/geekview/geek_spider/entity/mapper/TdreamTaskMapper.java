@@ -42,13 +42,13 @@ public interface TdreamTaskMapper {
     @Results({
             @Result(property = "crawlUrl",column = "crawl_url",jdbcType = JdbcType.VARCHAR),
             @Result(property = "originalId",column = "original_id",jdbcType = JdbcType.VARCHAR),
-            @Result(property = "pkId",column = "pk_id",jdbcType = JdbcType.VARCHAR),
+            @Result(property = "pkId",column = "pk_id",jdbcType = JdbcType.INTEGER),
             @Result(property = "crawlFrequency",column = "crawl_frequency",jdbcType = JdbcType.VARCHAR),
     })
     List<TdreamTask> queryTaskListByCrawlInterval(@Param("websiteId") Integer websiteId, @Param("crawlStatus") Integer crawlStatus,@Param("crawlTimeLeft") Date crawlTimeLeft, @Param("crawlTimeRight") Date crawlTimeRight);
 
 
-    String updateByPrimaryKey = "update t_dream_task set\n" +
+    String updateCrawlStatusByPrimaryKey = "update t_dream_task set\n" +
             "      crawl_status = #{crawlStatus,jdbcType=INTEGER},\n" +
             "      crawl_time = #{crawlTime,jdbcType=TIMESTAMP},\n" +
             "      next_crawl_time = #{nextCrawlTime,jdbcType=TIMESTAMP}\n" +
@@ -59,10 +59,33 @@ public interface TdreamTaskMapper {
      * @param task
      * @return
      */
-    @Update(updateByPrimaryKey)
+    @Update(updateCrawlStatusByPrimaryKey)
     int updateCrawlStatusByPrimaryKey(TdreamTask task);
 
 
+    /**
+     *  查询抓取状态是等待抓取，但是下次抓取时间已经过期的任务
+     */
+    String queryTaskListByCrawlStatus="select pk_id,crawl_frequency,crawl_time,crawl_status,next_crawl_time from " +
+            "  t_dream_task   where" +
+            "  crawl_status = #{crawlStatus,jdbcType=INTEGER} " +
+            "  and  next_crawl_time < #{updateDateTime,jdbcType=TIMESTAMP}";
+
+    @Select(queryTaskListByCrawlStatus)
+    @Results({
+            @Result(property = "pkId",column = "pk_id",jdbcType = JdbcType.INTEGER),
+            @Result(property = "originalId",column = "original_id",jdbcType = JdbcType.VARCHAR),
+            @Result(property = "crawlFrequency",column = "crawl_frequency",jdbcType = JdbcType.INTEGER),
+            @Result(property = "crawlStatus",column = "crawl_status",jdbcType = JdbcType.INTEGER),
+            @Result(property = "crawlTime",column = "crawl_time",jdbcType = JdbcType.TIMESTAMP),
+            @Result(property = "nextCrawlTime",column = "next_crawl_time",jdbcType = JdbcType.TIMESTAMP),
+    })
+    List<TdreamTask> queryTaskListByCrawlStatus(@Param("crawlStatus") Integer crawlStatus,@Param("updateDateTime")Date updateDateTime);
+
+
+    /**
+     * 查询所有的任务数
+     */
     String queryAllTaskList = "select website_id,original_id,crawl_status,crawl_frequency" +
             "  from t_dream_task" ;
 
@@ -71,7 +94,9 @@ public interface TdreamTaskMapper {
             @Result(property = "websiteId",column = "website_id",jdbcType = JdbcType.INTEGER),
             @Result(property = "originalId",column = "original_id",jdbcType = JdbcType.VARCHAR),
             @Result(property = "crawlFrequency",column = "crawl_frequency",jdbcType = JdbcType.INTEGER),
+            @Result(property = "crawlStatus",column = "crawl_status",jdbcType = JdbcType.INTEGER),
     })
     List<TdreamTask> queryAllTaskList();
+
 
 }

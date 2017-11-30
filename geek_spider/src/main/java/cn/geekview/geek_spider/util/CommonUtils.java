@@ -30,6 +30,9 @@ public class CommonUtils {
     }
 
     public static String httpRequest_Get(String url){
+        if (url==null){
+            return "";
+        }
         System.setProperty("https.protocols", "TLSv1.2");
         RestTemplate restTemplate = new RestTemplate();
         //请求头

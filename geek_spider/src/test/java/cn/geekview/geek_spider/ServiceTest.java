@@ -25,6 +25,7 @@ public class ServiceTest {
         try {
 //            tbService.initTask(new Date(), Constant.FIVE_MINUTES);
 //            tbService.crawlTask(new DateTime(2017,11,24,12,0,0).toDate());
+//            tbService.crawlTask(new Date());
         } catch (Exception e) {
             e.printStackTrace();
         }
