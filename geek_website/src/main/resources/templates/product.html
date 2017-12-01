@@ -3,20 +3,20 @@
 <head>
     <title>产品详情</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="icon" type="image/png" href="image/favicon.ico"></link>
     <script th:src="@{/webjars/jquery/1.11.1/jquery.js}"></script>
+    <link th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.css}" rel="stylesheet"></link>
+    <script th:src="@{/webjars/bootstrap/3.3.7/js/bootstrap.min.js}"></script>
     <script src="http://cdn.hcharts.cn/highcharts/highcharts.js"></script>
     <script src="https://img.hcharts.cn/highcharts/modules/exporting.js"></script>
     <script src="https://img.hcharts.cn/highcharts/modules/series-label.js"></script>
     <script src="https://img.hcharts.cn/highcharts/modules/oldie.js"></script>
     <script src="https://img.hcharts.cn/highcharts-plugins/highcharts-zh_CN.js"></script>
-    <link th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.css}" rel="stylesheet"></link>
-    <script th:src="@{/webjars/bootstrap/3.3.7/js/bootstrap.min.js}"></script>
 </head>
 <body>
     <div style="display: flex;justify-content: center;">
         <div id="amount"></div>
         <div id="people"></div>
-        <div id="people2"></div>
     </div>
 
     <script th:inline="javascript">
@@ -108,57 +108,6 @@
             }
         });
         $("#people").highcharts({
-            credits: {/*去除版本信息*/
-                enabled: false
-            },
-            title: {
-                text: /*[[${products[0].productName}]]*/ '极客视界'
-            },
-            subtitle: {
-                text: '数据来源：www.geekview.cn'
-            },
-            xAxis: {
-                categories: updateDatetime,
-                crosshair: true
-            },
-            yAxis: {
-                title: {
-                    text: '支持人数变化'
-                }
-            },
-            legend: {
-                layout: 'vertical',
-                align: 'right',
-                verticalAlign: 'middle'
-            },
-            series: [{
-                name: '支持人数',
-                data: supportCount,
-                color: '#B3EE3A'
-            }, {
-                name: '关注人数',
-                data: focusCount,
-                color: '#98FB98'
-            }],
-            tooltip: {
-                shared: true
-            },
-            responsive: {
-                rules: [{
-                    condition: {
-                        maxWidth: 500
-                    },
-                    chartOptions: {
-                        legend: {
-                            layout: 'horizontal',/*水平布局*/
-                            align: 'center',/*设定图例在图表区中的水平对齐方式*/
-                            verticalAlign: 'bottom'/*设定图例在图表区中的垂直对齐方式*/
-                        }
-                    }
-                }]
-            }
-        });
-        $("#people2").highcharts({
             credits: {/*去除版本信息*/
                 enabled: false
             },

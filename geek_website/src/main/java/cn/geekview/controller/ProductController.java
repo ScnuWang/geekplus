@@ -8,11 +8,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("/product")
 public class ProductController {
 
@@ -20,8 +19,10 @@ public class ProductController {
     private TdreamTbServiceImpl tbService;
 
     @RequestMapping(value = "/{crawlFrequence}/{originalId}",method = RequestMethod.GET)
-    public List<TdreamTbProduct> productTrend(@PathVariable("crawlFrequence")Integer crawlFrequence, @PathVariable("originalId")String originalId){
+    public String productTrend(@PathVariable("crawlFrequence")Integer crawlFrequence, @PathVariable("originalId")String originalId, Model model){
         List<TdreamTbProduct> products = tbService.queryProductPriceTrend(crawlFrequence,originalId);
-        return products;
+        model.addAttribute("products",products);
+        return "product";
     }
+
 }

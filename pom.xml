@@ -20,5 +20,6 @@
 	<modules>
 		<module>geek_spider</module>
 		<module>geek_analysis</module>
+		<module>geek_website</module>
 	</modules>
 </project>

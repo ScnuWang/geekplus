@@ -4,12 +4,12 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>cn.geekview</groupId>
-	<artifactId>geek_analysis</artifactId>
+	<artifactId>geek_website</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>geek_analysis</name>
-	<description>Analysis Data Module</description>
+	<name>geek_website</name>
+	<description>WebSite Project For GeekPlus</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -79,6 +79,15 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-redis</artifactId>
 			<version>1.3.6.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>bootstrap</artifactId>
+			<version>3.3.7</version>
 		</dependency>
 	</dependencies>
 
