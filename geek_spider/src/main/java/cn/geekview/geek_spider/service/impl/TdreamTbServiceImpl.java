@@ -26,7 +26,7 @@ import java.util.concurrent.Executors;
 public class TdreamTbServiceImpl implements TdreamCrawlService {
 
     protected Logger logger = Logger.getLogger(this.getClass());
-
+    //只抓取众筹中的，在地上上添加status=1
     private static String preCrawlProductlistUrl = "https://hstar-hi.alicdn.com/dream/ajax/getProjectList.htm?projectType=&type=6&sort=1&pageSize=100&page=";
 
     private static String crawlProductDetailUrl = "https://hstar-hi.alicdn.com/dream/ajax/getProjectForDetail.htm?id=";
@@ -45,6 +45,9 @@ public class TdreamTbServiceImpl implements TdreamCrawlService {
     private TdreamTbItemMapper itemMapper;
 
     @Autowired
+    private TdreamTaskServiceImpl taskService;
+
+    @Autowired
     private MailServiceImpl mailService;
 
     @Autowired
@@ -59,7 +62,7 @@ public class TdreamTbServiceImpl implements TdreamCrawlService {
     public void initTask(Date updateDateTime,final Integer crawlFrequency) {
         long startTime = System.currentTimeMillis();
         Map<String,TdreamTask> urlMap = new ConcurrentHashMap<>();//！！！！测试高并发情况
-        String firstUrl = "https://hstar-hi.alicdn.com/dream/ajax/getProjectList.htm?projectType=&type=6&sort=1&pageSize=100&page=1";
+        String firstUrl = preCrawlProductlistUrl+1;
         try {
             String result = CommonUtils.httpRequest_Get(firstUrl);
             JSONObject jsonObject = (JSONObject) JSONObject.parse(result);
@@ -100,7 +103,6 @@ public class TdreamTbServiceImpl implements TdreamCrawlService {
                                 String productUrl = crawlProductDetailUrl+id;
                                 //将待抓取的地址放入任务列表中
                                 TdreamTask task = new TdreamTask();
-                                task = new TdreamTask();
                                 task.setOriginalId(id);
                                 task.setCrawlFrequency(crawlFrequency);
                                 task.setCrawlStatus(Constant.CRAWL_STATUAS_WAITING);
@@ -150,7 +152,7 @@ public class TdreamTbServiceImpl implements TdreamCrawlService {
             }
         }
         long time = System.currentTimeMillis()-startTime;
-        System.out.println(" 初始化任务总共花费时间："+time/1000+"秒");
+        System.out.println(" 淘宝初始化任务总共花费时间："+time/1000+"秒");
     }
 
     /**
@@ -163,10 +165,11 @@ public class TdreamTbServiceImpl implements TdreamCrawlService {
         List<TdreamTask>  taskList = taskMapper.queryTaskListByCrawlInterval(Constant.WEBSITE_ID_TAOBAO,Constant.CRAWL_STATUAS_WAITING,new DateTime(updateDateTime).plusMinutes(-3).toDate(),new DateTime(updateDateTime).plusMinutes(3).toDate());
         Runnable runnable = new Runnable() {
             public synchronized TdreamTask getTask(){
-                if(taskList.size()>0)
+                if(taskList.size()>0){
                     return taskList.remove(0);
-                else
+                } else{
                     return null;
+                }
             }
             @Override
             public void run() {
@@ -277,18 +280,8 @@ public class TdreamTbServiceImpl implements TdreamCrawlService {
 //                e.printStackTrace();
 //            }
         }
-        //处理抓取状态是等待抓取，但是下次抓取时间已经过期的任务
-        List<TdreamTask> listByCrawlStatus = taskMapper.queryTaskListByCrawlStatus(Constant.CRAWL_STATUAS_WAITING,updateDateTime);
-        long n = updateDateTime.getTime();
-        for (TdreamTask tdreamTask : listByCrawlStatus) {
-
-            long m = tdreamTask.getCrawlTime().getTime();
-            //已经错过的抓取次数
-            int t = (int)Math.ceil((n-m)/(tdreamTask.getCrawlFrequency()*60*1000.0))+1;
-            Date nextCrawlTime = new DateTime(tdreamTask.getCrawlTime()).plusMinutes(tdreamTask.getCrawlFrequency()*t).toDate();
-            tdreamTask.setNextCrawlTime(nextCrawlTime);
-            taskMapper.updateCrawlStatusByPrimaryKey(tdreamTask);
-        }
+        //放这里也不对，万一淘宝很快执行完，其他平台还未执行呢？
+        taskService.queryTaskListByCrawlStatus(updateDateTime);
         long time = System.currentTimeMillis()-startTime;
         System.out.println("抓取项目总共花费时间："+time/1000+"秒");
     }

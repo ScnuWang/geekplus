@@ -44,6 +44,7 @@ public interface TdreamTaskMapper {
             @Result(property = "originalId",column = "original_id",jdbcType = JdbcType.VARCHAR),
             @Result(property = "pkId",column = "pk_id",jdbcType = JdbcType.INTEGER),
             @Result(property = "crawlFrequency",column = "crawl_frequency",jdbcType = JdbcType.VARCHAR),
+            @Result(property = "crawlTime",column = "crawl_time",jdbcType = JdbcType.TIMESTAMP),
     })
     List<TdreamTask> queryTaskListByCrawlInterval(@Param("websiteId") Integer websiteId, @Param("crawlStatus") Integer crawlStatus,@Param("crawlTimeLeft") Date crawlTimeLeft, @Param("crawlTimeRight") Date crawlTimeRight);
 

@@ -1,5 +1,8 @@
 package cn.geekview.geek_spider.schedule;
 
+import cn.geekview.geek_spider.entity.mapper.TdreamTaskMapper;
+import cn.geekview.geek_spider.service.impl.TdreamJdServiceImpl;
+import cn.geekview.geek_spider.service.impl.TdreamTaskServiceImpl;
 import cn.geekview.geek_spider.service.impl.TdreamTbServiceImpl;
 import cn.geekview.geek_spider.util.Constant;
 import org.joda.time.DateTime;
@@ -18,6 +21,11 @@ public class ScheduleTask {
     @Autowired
     private TdreamTbServiceImpl tbService;
 
+    @Autowired
+    private TdreamTaskServiceImpl taskService;
+
+    @Autowired
+    private TdreamJdServiceImpl jdService;
 
 
     //每天中午十二点触发
@@ -27,24 +35,28 @@ public class ScheduleTask {
         tbService.initTask(dateTime, Constant.TWENTY_FOUR_HOURS);
     }
 
+
     //每隔2个小时触发一次
     @Scheduled(cron = "0 0 0-23/2 * * ?")
     public void initTask_TWO_HOURS(){
         tbService.initTask(new Date(), Constant.TWO_HOURS);
     }
 
-//    //每隔5分钟触发一次
-//    @Scheduled(cron = "0 0-59/5 * * * ?")
-//    public void initTask_FIVE_MINUTES(){
-//        tbService.initTask(new Date(), Constant.FIVE_MINUTES);
-//    }
+
+
+    //每隔5分钟触发一次
+    @Scheduled(cron = "0 0-59/5 * * * ?")
+    public void initTask_FIVE_MINUTES(){
+        jdService.initTask(new Date(), Constant.FIVE_MINUTES);
+    }
 
 
 
     //每隔5分钟触发一次
     @Scheduled(cron = "0 0-59/5 * * * ?")
     public void crawlTask(){
-        tbService.crawlTask(new Date());
+//        tbService.crawlTask(new Date());
+        jdService.crawlTask(new Date());
     }
 
 

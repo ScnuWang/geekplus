@@ -1,11 +1,18 @@
 package cn.geekview.geek_spider;
 
+import cn.geekview.geek_spider.entity.model.TdreamJdItem;
 import cn.geekview.geek_spider.util.CommonUtils;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.joda.time.DateTime;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.junit.Test;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -23,57 +30,17 @@ public class BasicTest {
 
 
         @Test
-        public void test2() throws InterruptedException {
-            long startTime = System.currentTimeMillis();
-            String url = "https://hstar-hi.alicdn.com/dream/ajax/getProjectList.htm?projectType=&type=6&sort=1&pageSize=100&page=1";
-            String preUrl = "https://hstar-hi.alicdn.com/dream/ajax/getProjectList.htm?projectType=&type=6&sort=1&pageSize=100&page=";
-            String result = CommonUtils.httpRequest_Get(url);
-            JSONObject jsonObject = (JSONObject) JSONObject.parse(result);
-            Integer total = jsonObject.getInteger("total");
-            Integer page_num = (int)Math.ceil(total/100.0);
-            List<String> list = new ArrayList<>();
-            for (int i = 1; i <= page_num; i++) {
-                list.add(preUrl+i);
+        public void test2() throws InterruptedException, ParseException {
+            String result = CommonUtils.httpRequest_Get("https://z.jd.com/project/details/88360.html").trim();
+            Document doc = Jsoup.parse(result);
+            Elements divs = doc.select(".box-grade");
+            if(divs.size()>0) {
+                for (Element itemObj : divs) {
+                    TdreamJdItem item = new TdreamJdItem();
+                    Elements nodes = nodes = itemObj.select(".t-price");
+                    System.out.println(nodes.get(0));
+                }
             }
-            Runnable runnable = new Runnable() {
-                private int order = 1;
-
-                public synchronized String getThreadName(){
-                    return "_线程_"+(order++);
-                }
-                public synchronized String getUrl(){
-                    if(list.size()>0)
-                        return list.remove(0);
-                    else
-                        return null;
-                }
-                @Override
-                public void run() {
-                    String url = null;
-                    String result = null;
-                    String threadname = getThreadName();
-                    while ((url = getUrl())!=null){
-                        result = CommonUtils.httpRequest_Get(url);
-                        JSONObject jsonObject = (JSONObject) JSONObject.parse(result);
-                        JSONArray jsonArray = jsonObject.getJSONArray("data");
-                        int size = jsonArray.size();
-                        System.out.println("当前请求地址："+url+"线程名："+threadname+"项目数："+size);
-                    }
-                }
-            };
-            ExecutorService executorService = Executors.newFixedThreadPool(50);
-            for (int i = 0; i < 50; i++) {
-                executorService.execute(runnable);
-            }
-            executorService.shutdown();
-            while (true){
-                if (executorService.isTerminated()){
-                    break;
-                }
-                Thread.sleep(1000);
-
-            }
-            System.out.println(System.currentTimeMillis()-startTime);
         }
 
         @Test

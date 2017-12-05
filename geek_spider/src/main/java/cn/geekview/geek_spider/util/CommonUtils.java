@@ -7,6 +7,8 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -51,5 +53,20 @@ public class CommonUtils {
         ResponseEntity responseEntity = restTemplate.exchange(url, HttpMethod.GET,httpEntity,String.class);
         String result = ((String) responseEntity.getBody()).trim();
         return result;
+    }
+
+    private static Pattern numberPattern = Pattern.compile("(\\d+(\\.\\d+)?)");
+    public static List<String> getNumberList(String str){
+        List<String> list = new ArrayList<String>();
+        if(!isEmpty(str)){
+            if(str.indexOf(",")>-1){
+                str = str.replace(",", "");
+            }
+            Matcher m = numberPattern.matcher(str);
+            while(m.find()){
+                list.add(m.group());
+            }
+        }
+        return list;
     }
 }

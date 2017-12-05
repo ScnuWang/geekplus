@@ -1,5 +1,7 @@
 package cn.geekview.geek_spider.util;
 
+import java.math.BigDecimal;
+
 /**
  * 公共常量类
  */
@@ -29,5 +31,10 @@ public class Constant {
     public static final Integer CRAWL_STATUAS_STOP = 4;
 
     public static final String CNY = "CNY";
+    public static final double MSEC_DAY = 24*60*60*1000;
+    /**
+     * 人民币汇率
+     */
+    public static final BigDecimal CNY_EXCHANGE_RATE = new BigDecimal(1);
 
 }
