@@ -37,7 +37,7 @@ public class ScheduleTask {
 
 
     //每隔2个小时触发一次
-    @Scheduled(cron = "0 0 0-23/2 * * ?")
+//    @Scheduled(cron = "0 0 0-23/2 * * ?")
     public void initTask_TWO_HOURS(){
         tbService.initTask(new Date(), Constant.TWO_HOURS);
     }
@@ -45,7 +45,7 @@ public class ScheduleTask {
 
 
     //每隔5分钟触发一次
-    @Scheduled(cron = "0 0-59/5 * * * ?")
+//    @Scheduled(cron = "0 0-59/5 * * * ?")
     public void initTask_FIVE_MINUTES(){
         jdService.initTask(new Date(), Constant.FIVE_MINUTES);
     }
