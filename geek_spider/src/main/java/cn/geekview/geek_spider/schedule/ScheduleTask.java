@@ -1,8 +1,6 @@
 package cn.geekview.geek_spider.schedule;
 
-import cn.geekview.geek_spider.entity.mapper.TdreamTaskMapper;
 import cn.geekview.geek_spider.service.impl.TdreamJdServiceImpl;
-import cn.geekview.geek_spider.service.impl.TdreamTaskServiceImpl;
 import cn.geekview.geek_spider.service.impl.TdreamTbServiceImpl;
 import cn.geekview.geek_spider.util.Constant;
 import org.joda.time.DateTime;
@@ -20,9 +18,6 @@ public class ScheduleTask {
 
     @Autowired
     private TdreamTbServiceImpl tbService;
-
-    @Autowired
-    private TdreamTaskServiceImpl taskService;
 
     @Autowired
     private TdreamJdServiceImpl jdService;

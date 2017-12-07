@@ -31,16 +31,11 @@ public class BasicTest {
 
         @Test
         public void test2() throws InterruptedException, ParseException {
-            String result = CommonUtils.httpRequest_Get("https://z.jd.com/project/details/88360.html").trim();
-            Document doc = Jsoup.parse(result);
-            Elements divs = doc.select(".box-grade");
-            if(divs.size()>0) {
-                for (Element itemObj : divs) {
-                    TdreamJdItem item = new TdreamJdItem();
-                    Elements nodes = nodes = itemObj.select(".t-price");
-                    System.out.println(nodes.get(0));
-                }
-            }
+            String result = CommonUtils.httpRequest_Get("https://zc.suning.com/project/detail.htm?projectId=17607");
+            Document document = Jsoup.parse(result);
+            //获取总的项目数
+            Elements elements = document.select(".item-organizer.box img");
+            System.out.println(elements);
         }
 
         @Test

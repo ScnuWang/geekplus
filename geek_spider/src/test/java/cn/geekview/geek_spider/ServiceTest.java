@@ -1,6 +1,7 @@
 package cn.geekview.geek_spider;
 
 import cn.geekview.geek_spider.service.impl.TdreamJdServiceImpl;
+import cn.geekview.geek_spider.service.impl.TdreamSnServiceImpl;
 import cn.geekview.geek_spider.service.impl.TdreamTbServiceImpl;
 import cn.geekview.geek_spider.service.impl.TdreamXmServiceImpl;
 import cn.geekview.geek_spider.util.Constant;
@@ -28,21 +29,23 @@ public class ServiceTest {
     @Autowired
     private TdreamXmServiceImpl xmService;
 
+    @Autowired
+    private TdreamSnServiceImpl snService;
+
     @Test
     public void test1(){
         try {
 //            tbService.initTask(new Date(), Constant.FIVE_MINUTES);
-//            tbService.crawlTask(new DateTime(2017,11,24,12,0,0).toDate());
+//            jdService.initTask(new Date(), Constant.FIVE_MINUTES);
+//            xmService.initTask(new Date(), Constant.FIVE_MINUTES);
+            snService.initTask(new Date(), Constant.FIVE_MINUTES);
 //            tbService.crawlTask(new Date());
 //            jdService.crawlTask(new Date());
-            xmService.crawlTask(new Date());
+//            xmService.crawlTask(new Date());
+            snService.crawlTask(new Date());
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    @Test
-    public void test(){
-        xmService.initTask(new Date(), Constant.FIVE_MINUTES);
-    }
 }

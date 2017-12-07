@@ -56,7 +56,7 @@ public class TdreamJdServiceImpl implements TdreamCrawlService{
             String result = CommonUtils.httpRequest_Get(firstUrl);
             Document document = Jsoup.parse(result);
             //获取总的项目数
-            Integer total = Integer.valueOf(document.select("body > div.wrap.mt20 > div.l-header > div.l-selectBox > div > div.l-statistics.fr > strong").text());
+            Integer total = Integer.valueOf(document.select(".l-statistics.fr strong").text());
             Integer page_num = (int)Math.ceil(total/16.0);
             List<String> list = new ArrayList<>();
             for (int i = 1; i <= page_num; i++) {
@@ -357,7 +357,6 @@ public class TdreamJdServiceImpl implements TdreamCrawlService{
                                 //如果关键字段为空的，直接跳过
                                 if(item.getItemSupport()==null) continue;
                                 if(item.getItemTotal()==null) continue;
-                                if(item.getItemPrice()==null) continue;
                                 if(item.getOriginalItemPrice()==null) continue;
                                 item.setUpdateDatetime(updateDateTime);
                                 itemList.add(item);
@@ -404,6 +403,6 @@ public class TdreamJdServiceImpl implements TdreamCrawlService{
 //            }
         }
         long time = System.currentTimeMillis()-startTime;
-        System.out.println("抓取项目总共花费时间："+time/1000+"秒");
+        System.out.println("京东抓取项目总共花费时间："+time/1000+"秒");
     }
 }

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.geekview.geek_spider.entity.mapper.TdreamSnItemMapper">
+  <resultMap id="BaseResultMap" type="cn.geekview.geek_spider.entity.model.TdreamSnItem">
+    <id column="pk_id" jdbcType="INTEGER" property="pkId" />
+    <result column="product_id" jdbcType="INTEGER" property="productId" />
+    <result column="original_item_id" jdbcType="VARCHAR" property="originalItemId" />
+    <result column="item_title" jdbcType="VARCHAR" property="itemTitle" />
+    <result column="item_desc" jdbcType="VARCHAR" property="itemDesc" />
+    <result column="item_image" jdbcType="VARCHAR" property="itemImage" />
+    <result column="currency_sign" jdbcType="VARCHAR" property="currencySign" />
+    <result column="original_item_price" jdbcType="DECIMAL" property="originalItemPrice" />
+    <result column="item_price" jdbcType="DECIMAL" property="itemPrice" />
+    <result column="item_support" jdbcType="INTEGER" property="itemSupport" />
+    <result column="item_total" jdbcType="INTEGER" property="itemTotal" />
+    <result column="update_datetime" jdbcType="TIMESTAMP" property="updateDatetime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="reserve1" jdbcType="VARCHAR" property="reserve1" />
+    <result column="reserve2" jdbcType="VARCHAR" property="reserve2" />
+    <result column="reserve3" jdbcType="VARCHAR" property="reserve3" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    pk_id, product_id, original_item_id, item_title, item_desc, item_image, currency_sign, 
+    original_item_price, item_price, item_support, item_total, update_datetime, update_time, 
+    reserve1, reserve2, reserve3
+  </sql>
+  <insert id="insertRecordList">
+     insert into t_dream_sn_item (pk_id, product_id, original_item_id,
+      item_title, item_desc, item_image,
+      currency_sign, original_item_price, item_price,
+      item_support, item_total, update_datetime,
+      reserve1, reserve2,reserve3) VALUES
+      <foreach collection="itemList" index="index" item="itemObj" separator=",">
+        (#{itemObj.pkId,jdbcType=INTEGER}, #{productId,jdbcType=INTEGER}, #{itemObj.originalItemId,jdbcType=VARCHAR},
+        #{itemObj.itemTitle,jdbcType=VARCHAR}, #{itemObj.itemDesc,jdbcType=VARCHAR}, #{itemObj.itemImage,jdbcType=VARCHAR},
+        #{itemObj.currencySign,jdbcType=VARCHAR}, #{itemObj.originalItemPrice,jdbcType=DECIMAL}, #{itemObj.itemPrice,jdbcType=DECIMAL},
+        #{itemObj.itemSupport,jdbcType=INTEGER}, #{itemObj.itemTotal,jdbcType=INTEGER}, #{itemObj.updateDatetime,jdbcType=TIMESTAMP},
+        #{itemObj.reserve1,jdbcType=VARCHAR}, #{itemObj.reserve2,jdbcType=VARCHAR},
+        #{itemObj.reserve3,jdbcType=VARCHAR})
+      </foreach>
+  </insert>
+</mapper>

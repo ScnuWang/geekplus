@@ -283,7 +283,7 @@ public class TdreamTbServiceImpl implements TdreamCrawlService {
         //放这里也不对，万一淘宝很快执行完，其他平台还未执行呢？
         taskService.queryTaskListByCrawlStatus(updateDateTime);
         long time = System.currentTimeMillis()-startTime;
-        System.out.println("抓取项目总共花费时间："+time/1000+"秒");
+        System.out.println("淘宝抓取项目总共花费时间："+time/1000+"秒");
     }
 
 }
