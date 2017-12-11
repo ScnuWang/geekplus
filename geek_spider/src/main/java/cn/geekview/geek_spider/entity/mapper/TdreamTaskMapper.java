@@ -52,7 +52,8 @@ public interface TdreamTaskMapper {
     String updateCrawlStatusByPrimaryKey = "update t_dream_task set\n" +
             "      crawl_status = #{crawlStatus,jdbcType=INTEGER},\n" +
             "      crawl_time = #{crawlTime,jdbcType=TIMESTAMP},\n" +
-            "      next_crawl_time = #{nextCrawlTime,jdbcType=TIMESTAMP}\n" +
+            "      next_crawl_time = #{nextCrawlTime,jdbcType=TIMESTAMP},\n" +
+            "      reserve1  = #{reserve1,jdbcType=VARCHAR}\n" +
             "    where pk_id = #{pkId,jdbcType=INTEGER}";
 
     /**
@@ -70,6 +71,7 @@ public interface TdreamTaskMapper {
     String queryTaskListByCrawlStatus="select pk_id,crawl_frequency,crawl_time,crawl_status,next_crawl_time from " +
             "  t_dream_task   where" +
             "  crawl_status = #{crawlStatus,jdbcType=INTEGER} " +
+            "  and  website_id = #{websiteId,jdbcType=INTEGER}" +
             "  and  next_crawl_time < #{updateDateTime,jdbcType=TIMESTAMP}";
 
     @Select(queryTaskListByCrawlStatus)
@@ -81,7 +83,7 @@ public interface TdreamTaskMapper {
             @Result(property = "crawlTime",column = "crawl_time",jdbcType = JdbcType.TIMESTAMP),
             @Result(property = "nextCrawlTime",column = "next_crawl_time",jdbcType = JdbcType.TIMESTAMP),
     })
-    List<TdreamTask> queryTaskListByCrawlStatus(@Param("crawlStatus") Integer crawlStatus,@Param("updateDateTime")Date updateDateTime);
+    List<TdreamTask> queryTaskListByCrawlStatus(@Param("crawlStatus") Integer crawlStatus,@Param("updateDateTime")Date updateDateTime,@Param("websiteId")Integer websiteId);
 
 
     /**

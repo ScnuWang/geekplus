@@ -18,7 +18,6 @@ import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.URLEncoder;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -37,8 +36,6 @@ public class TdreamXmServiceImpl implements TdreamCrawlService {
     private static String crawlProductDetailUrl = "https://home.mi.com/app/shop/pipe?gid=";
 
     private static String productUrl = "https://youpin.mi.com/detail?gid=";
-
-    private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
 
     @Autowired
     private TdreamTaskMapper taskMapper;
@@ -74,11 +71,9 @@ public class TdreamXmServiceImpl implements TdreamCrawlService {
         } catch (UnsupportedEncodingException e1) {
             logger.error("编码众筹项目列表请求参数异常："+e1.getMessage());
         }
-        result = CommonUtils.httpRequestForXiaoMi("https://home.mi.com/app/shopv3/pipe",listParms).trim();
-        System.out.println(result);
+        result = CommonUtils.httpRequestForXiaoMi(crawlProductlistUrl,listParms).trim();
         JSONObject jsonObject = (JSONObject) JSONObject.parse(result);
         JSONArray data = jsonObject.getJSONObject("result").getJSONObject("request").getJSONArray("data");
-        System.out.println(data);
         for(int i=0;i<data.size();i++){
             JSONObject entity = data.getJSONObject(i);
             String id = entity.getString("gid");
@@ -114,7 +109,7 @@ public class TdreamXmServiceImpl implements TdreamCrawlService {
             }
         }
         long time = System.currentTimeMillis()-startTime;
-        System.out.println(" 小米初始化任务总共花费时间："+time/1000+"秒");
+        System.out.println(" 初始化任务总共花费时间："+time/1000+"秒");
     }
 
     /**
@@ -264,11 +259,11 @@ public class TdreamXmServiceImpl implements TdreamCrawlService {
 //                e.printStackTrace();
 //            }
         }
-        //放这里也不对，万一淘宝很快执行完，其他平台还未执行呢？
-        taskService.queryTaskListByCrawlStatus(updateDateTime);
         long time = System.currentTimeMillis()-startTime;
         System.out.println("小米抓取项目总共花费时间："+time/1000+"秒");
 
+
+        taskService.queryTaskListByCrawlStatus(updateDateTime,Constant.WEBSITE_ID_XIAOMI);
     }
 
 }

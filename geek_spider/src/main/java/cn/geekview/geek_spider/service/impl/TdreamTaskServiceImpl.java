@@ -10,16 +10,29 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
 
-@Service("TaskServiceImpl")
+@Service("TdreamTaskServiceImpl")
 public class TdreamTaskServiceImpl {
 
     @Autowired
     TdreamTaskMapper taskMapper;
 
-    public void queryTaskListByCrawlStatus(Date updateDateTime){
-        //处理抓取状态是等待抓取，但是下次抓取时间已经过期的任务,
-        // 如果放入定时器，会出现抓取任务还没开始，任务的下次抓取时间已经被修改，故而任务一直不能被抓取 只需要一个平台处理即可
-        List<TdreamTask> listByCrawlStatus = taskMapper.queryTaskListByCrawlStatus(Constant.CRAWL_STATUAS_WAITING,updateDateTime);
+    //添加单个抓取任务
+    public int addOneTask(TdreamTask task){
+        return 0;
+    }
+    //同时添加多个抓取任务
+    public int addTaskList(List<TdreamTask> taskList){
+        return 0;
+    }
+
+
+    /**
+     * 处理抓取状态是等待抓取，但是下次抓取时间已经过期的任务
+     * @param updateDateTime
+     * @param websiteId
+     */
+    public void queryTaskListByCrawlStatus(Date updateDateTime,Integer websiteId){
+        List<TdreamTask> listByCrawlStatus = taskMapper.queryTaskListByCrawlStatus(Constant.CRAWL_STATUAS_WAITING,updateDateTime,websiteId);
         long n = updateDateTime.getTime();
         for (TdreamTask tdreamTask : listByCrawlStatus) {
             long m = tdreamTask.getCrawlTime().getTime();

@@ -46,6 +46,9 @@ public class TdreamJdServiceImpl implements TdreamCrawlService{
     @Autowired
     private TdreamJdItemMapper itemMapper;
 
+    @Autowired
+    private TdreamTaskServiceImpl taskService;
+
     @Override
     public void initTask(Date updateDateTime, Integer crawlFrequency) {
         long startTime = System.currentTimeMillis();
@@ -404,5 +407,7 @@ public class TdreamJdServiceImpl implements TdreamCrawlService{
         }
         long time = System.currentTimeMillis()-startTime;
         System.out.println("京东抓取项目总共花费时间："+time/1000+"秒");
+
+        taskService.queryTaskListByCrawlStatus(updateDateTime,Constant.WEBSITE_ID_JINGDONG);
     }
 }

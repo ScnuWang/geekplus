@@ -1,11 +1,11 @@
 package cn.geekview.geek_spider.service.impl;
 
-import cn.geekview.geek_spider.entity.model.TdreamTask;
-import cn.geekview.geek_spider.entity.model.TdreamTbItem;
-import cn.geekview.geek_spider.entity.model.TdreamTbProduct;
 import cn.geekview.geek_spider.entity.mapper.TdreamTaskMapper;
 import cn.geekview.geek_spider.entity.mapper.TdreamTbItemMapper;
 import cn.geekview.geek_spider.entity.mapper.TdreamTbProductMapper;
+import cn.geekview.geek_spider.entity.model.TdreamTask;
+import cn.geekview.geek_spider.entity.model.TdreamTbItem;
+import cn.geekview.geek_spider.entity.model.TdreamTbProduct;
 import cn.geekview.geek_spider.service.TdreamCrawlService;
 import cn.geekview.geek_spider.util.CommonUtils;
 import cn.geekview.geek_spider.util.Constant;
@@ -17,7 +17,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -27,7 +30,7 @@ public class TdreamTbServiceImpl implements TdreamCrawlService {
 
     protected Logger logger = Logger.getLogger(this.getClass());
     //只抓取众筹中的，在地上上添加status=1
-    private static String preCrawlProductlistUrl = "https://hstar-hi.alicdn.com/dream/ajax/getProjectList.htm?projectType=&type=6&sort=1&pageSize=100&page=";
+    private static String preCrawlProductlistUrl = "https://hstar-hi.alicdn.com/dream/ajax/getProjectList.htm?projectType=&type=6&sort=1&status=1&pageSize=100&page=";
 
     private static String crawlProductDetailUrl = "https://hstar-hi.alicdn.com/dream/ajax/getProjectForDetail.htm?id=";
 
@@ -192,8 +195,13 @@ public class TdreamTbServiceImpl implements TdreamCrawlService {
                             product.setProductImage("https:"+rootObject.getString("image"));
                             product.setProductVideo(rootObject.getString("video"));
                             product.setProductQrcode("https:"+rootObject.getString("qrcode"));
-                            product.setBeginDate(dateFormat.parse(rootObject.getString("begin_date")));
-                            product.setEndDate(dateFormat.parse(rootObject.getString("end_date")));
+                            try {
+                                product.setBeginDate(dateFormat.parse(rootObject.getString("begin_date")));
+                                product.setEndDate(dateFormat.parse(rootObject.getString("end_date")));
+                            }catch (Exception e){
+                                product.setBeginDate(null);
+                                product.setEndDate(null);
+                            }
                             product.setUpdateDatetime(new DateTime(updateDateTime).toDate());
                             //设置任务状态，除了预热中、众筹中的项目均不再自动抓取
                             switch (rootObject.getInteger("status_value")){
@@ -257,6 +265,7 @@ public class TdreamTbServiceImpl implements TdreamCrawlService {
 //                mailService.sendMail(subject,content);
                             //修改任务列表
                             task.setCrawlStatus(3);
+                            task.setReserve1(e.getMessage());
                             DateTime dateTime = new DateTime(updateDateTime);
                             task.setCrawlTime(dateTime.toDate());
                             task.setNextCrawlTime(dateTime.plusMinutes(task.getCrawlFrequency()).toDate());
@@ -280,10 +289,10 @@ public class TdreamTbServiceImpl implements TdreamCrawlService {
 //                e.printStackTrace();
 //            }
         }
-        //放这里也不对，万一淘宝很快执行完，其他平台还未执行呢？
-        taskService.queryTaskListByCrawlStatus(updateDateTime);
         long time = System.currentTimeMillis()-startTime;
         System.out.println("淘宝抓取项目总共花费时间："+time/1000+"秒");
+
+        taskService.queryTaskListByCrawlStatus(updateDateTime,Constant.WEBSITE_ID_TAOBAO);
     }
 
 }
