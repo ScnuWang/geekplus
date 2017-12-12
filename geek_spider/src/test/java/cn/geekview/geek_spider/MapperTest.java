@@ -19,13 +19,13 @@ public class MapperTest {
 
     @Test
     public void test1(){
-        TdreamTask task = new TdreamTask();
-        task.setPkId(1);
-        DateTime dateTime = new DateTime();
-        task.setCrawlTime(dateTime.toDate());
-        task.setCrawlStatus(1);
-        task.setNextCrawlTime(dateTime.plusMinutes(Constant.TWENTY_FOUR_HOURS).toDate());
-        taskMapper.updateCrawlStatusByPrimaryKey(task);
+//        TdreamTask task = new TdreamTask();
+//        task.setPkId(1);
+//        DateTime dateTime = new DateTime();
+//        task.setCrawlTime(dateTime.toDate());
+//        task.setCrawlStatus(1);
+//        task.setNextCrawlTime(dateTime.plusMinutes(Constant.TWENTY_FOUR_HOURS).toDate());
+//        taskMapper.updateCrawlStatusByPrimaryKey(task);
 //        taskMapper.insert(task);
     }
 

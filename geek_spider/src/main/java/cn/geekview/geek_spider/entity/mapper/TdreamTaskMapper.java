@@ -22,6 +22,9 @@ public interface TdreamTaskMapper {
     @Insert(insert)
     int insert(TdreamTask task);
 
+
+    int insertTaskList(List<TdreamTask> taskList);
+
     String queryTaskListByCrawlInterval = "select pk_id, crawl_url, crawl_frequency, crawl_status, crawl_time, next_crawl_time, original_id, \n" +
             "      website_id from t_dream_task" +
             "      where " +

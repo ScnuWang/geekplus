@@ -236,6 +236,9 @@ public class TdreamXmServiceImpl implements TdreamCrawlService {
 //                mailService.sendMail(subject,content);
                             //修改任务列表
                             task.setCrawlStatus(3);
+                            if (e != null||e.getMessage()!=null) {
+                                task.setReserve1(e.getMessage().trim().substring(0,e.getMessage().length()>1000?1000:e.getMessage().length()));
+                            }
                             DateTime dateTime = new DateTime(updateDateTime);
                             task.setCrawlTime(dateTime.toDate());
                             task.setNextCrawlTime(dateTime.plusMinutes(task.getCrawlFrequency()).toDate());

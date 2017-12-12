@@ -195,13 +195,8 @@ public class TdreamTbServiceImpl implements TdreamCrawlService {
                             product.setProductImage("https:"+rootObject.getString("image"));
                             product.setProductVideo(rootObject.getString("video"));
                             product.setProductQrcode("https:"+rootObject.getString("qrcode"));
-                            try {
-                                product.setBeginDate(dateFormat.parse(rootObject.getString("begin_date")));
-                                product.setEndDate(dateFormat.parse(rootObject.getString("end_date")));
-                            }catch (Exception e){
-                                product.setBeginDate(null);
-                                product.setEndDate(null);
-                            }
+                            product.setBeginDate(dateFormat.parse(rootObject.getString("begin_date")));
+                            product.setEndDate(dateFormat.parse(rootObject.getString("end_date")));
                             product.setUpdateDatetime(new DateTime(updateDateTime).toDate());
                             //设置任务状态，除了预热中、众筹中的项目均不再自动抓取
                             switch (rootObject.getInteger("status_value")){
@@ -265,7 +260,9 @@ public class TdreamTbServiceImpl implements TdreamCrawlService {
 //                mailService.sendMail(subject,content);
                             //修改任务列表
                             task.setCrawlStatus(3);
-                            task.setReserve1(e.getMessage());
+                            if (e != null||e.getMessage()!=null) {
+                                task.setReserve1(e.getMessage().trim().substring(0,e.getMessage().length()>1000?1000:e.getMessage().length()));
+                            }
                             DateTime dateTime = new DateTime(updateDateTime);
                             task.setCrawlTime(dateTime.toDate());
                             task.setNextCrawlTime(dateTime.plusMinutes(task.getCrawlFrequency()).toDate());

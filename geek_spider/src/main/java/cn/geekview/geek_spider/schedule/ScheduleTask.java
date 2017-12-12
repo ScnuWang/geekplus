@@ -43,30 +43,29 @@ public class ScheduleTask {
      */
     //每隔2个小时触发一次
     @Scheduled(cron = "0 0 0-23/1 * * ?")
-//    @Scheduled(cron = "0 0-59/5 * * * ?")
     public void initTask_TWO_HOURS(){
         Runnable r1 = new Runnable(){
             @Override
             public void run() {
-                tbService.initTask(new Date(), Constant.FIVE_MINUTES);
+                tbService.initTask(new Date(), Constant.ONE_HOUR);
             }
         };
         Runnable r2 =  new Runnable(){
             @Override
             public void run() {
-                jdService.initTask(new Date(), Constant.FIVE_MINUTES);
+                jdService.initTask(new Date(), Constant.ONE_HOUR);
             }
         };
         Runnable r3 =  new Runnable(){
             @Override
             public void run() {
-                snService.initTask(new Date(), Constant.FIVE_MINUTES);
+                snService.initTask(new Date(), Constant.ONE_HOUR);
             }
         };
         Runnable r4 = new Runnable(){
             @Override
             public void run() {
-                xmService.initTask(new Date(),Constant.FIVE_MINUTES);
+                xmService.initTask(new Date(),Constant.ONE_HOUR);
             }
         };
         new Thread(r1).start();

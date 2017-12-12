@@ -38,11 +38,11 @@ public class ServiceTest {
 //            tbService.initTask(new Date(), Constant.FIVE_MINUTES);
 //            jdService.initTask(new Date(), Constant.FIVE_MINUTES);
 //            xmService.initTask(new Date(), Constant.FIVE_MINUTES);
-            snService.initTask(new Date(), Constant.FIVE_MINUTES);
+//            snService.initTask(new Date(), Constant.FIVE_MINUTES);
 //            tbService.crawlTask(new Date());
 //            jdService.crawlTask(new Date());
 //            xmService.crawlTask(new Date());
-            snService.crawlTask(new Date());
+//            snService.crawlTask(new Date());
         } catch (Exception e) {
             e.printStackTrace();
         }

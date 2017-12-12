@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.geekview.geek_spider.entity.mapper.TdreamTaskMapper" >
+  <resultMap id="BaseResultMap" type="cn.geekview.geek_spider.entity.model.TdreamTask" >
+    <id column="pk_id" property="pkId" jdbcType="INTEGER" />
+    <result column="crawl_url" property="crawlUrl" jdbcType="VARCHAR" />
+    <result column="crawl_frequency" property="crawlFrequency" jdbcType="INTEGER" />
+    <result column="crawl_status" property="crawlStatus" jdbcType="INTEGER" />
+    <result column="crawl_time" property="crawlTime" jdbcType="TIMESTAMP" />
+    <result column="next_crawl_time" property="nextCrawlTime" jdbcType="TIMESTAMP" />
+    <result column="original_id" property="originalId" jdbcType="VARCHAR" />
+    <result column="website_id" property="websiteId" jdbcType="INTEGER" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="reserve1" property="reserve1" jdbcType="VARCHAR" />
+    <result column="reserve2" property="reserve2" jdbcType="VARCHAR" />
+    <result column="reserve3" property="reserve3" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    pk_id, crawl_url, crawl_frequency, crawl_status, crawl_time, next_crawl_time, original_id, 
+    website_id, update_time, reserve1, reserve2, reserve3
+  </sql>
+  <insert id="insertTaskList">
+    insert into t_dream_task (pk_id, crawl_url, crawl_frequency, crawl_status, crawl_time, next_crawl_time, original_id,
+    website_id, update_time, reserve1, reserve2, reserve3) VALUES
+    <foreach collection="itemList" index="index" item="itemObj" separator=",">
+      (#{itemObj.pkId,jdbcType=INTEGER}, #{itemObj.crawlUrl,jdbcType=VARCHAR},
+      #{itemObj.crawlFrequency,jdbcType=VARCHAR}, #{itemObj.crawlStatus,jdbcType=VARCHAR}, #{itemObj.crawlTime,jdbcType=VARCHAR},
+      #{itemObj.nextCrawlTime,jdbcType=VARCHAR}, #{itemObj.originalId,jdbcType=DECIMAL}, #{itemObj.websiteId,jdbcType=DECIMAL},
+      #{itemObj.reserve1,jdbcType=VARCHAR}, #{itemObj.reserve2,jdbcType=VARCHAR},
+      #{itemObj.reserve3,jdbcType=VARCHAR})
+    </foreach>
+  </insert>
+</mapper>

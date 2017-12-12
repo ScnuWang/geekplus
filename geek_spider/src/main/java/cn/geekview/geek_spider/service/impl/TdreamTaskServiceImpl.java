@@ -16,15 +16,19 @@ public class TdreamTaskServiceImpl {
     @Autowired
     TdreamTaskMapper taskMapper;
 
-    //添加单个抓取任务
-    public int addOneTask(TdreamTask task){
-        return 0;
-    }
-    //同时添加多个抓取任务
-    public int addTaskList(List<TdreamTask> taskList){
-        return 0;
+    /**
+     * 添加单个抓取任务
+     */
+    public int insertOneTask(TdreamTask task){
+        return taskMapper.insert(task);
     }
 
+    /**
+     * 同时添加多个抓取任务
+     */
+    public int insertTaskList(List<TdreamTask> taskList){
+        return taskMapper.insertTaskList(taskList);
+    }
 
     /**
      * 处理抓取状态是等待抓取，但是下次抓取时间已经过期的任务

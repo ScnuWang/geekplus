@@ -24,11 +24,8 @@ public class BasicTest {
         public void test(){
             long n = new DateTime(2017,11,28,11,36,00).toDate().getTime();
             long m = new DateTime(2017,11,28,10,00,00).toDate().getTime();
-
             System.out.println((int)Math.ceil((n-m)/(120*60*1000.0))+1);
         }
-
-
         @Test
         public void test2() throws InterruptedException, ParseException {
             String result = CommonUtils.httpRequest_Get("https://zc.suning.com/project/detail.htm?projectId=17607");
