@@ -90,19 +90,20 @@ public interface TdreamTaskMapper {
 
 
     /**
-     * 查询所有的任务数
+     * 查询平台所有的任务数
      */
-    String queryAllTaskList = "select website_id,original_id,crawl_status,crawl_frequency" +
-            "  from t_dream_task" ;
+    String queryAllTaskListByWebsiteId = "select website_id,original_id,crawl_status,crawl_frequency" +
+            "  from t_dream_task " +
+            "  where website_id = #{websiteId,jdbcType=INTEGER}" ;
 
-    @Select(queryAllTaskList)
+    @Select(queryAllTaskListByWebsiteId)
     @Results({
             @Result(property = "websiteId",column = "website_id",jdbcType = JdbcType.INTEGER),
             @Result(property = "originalId",column = "original_id",jdbcType = JdbcType.VARCHAR),
             @Result(property = "crawlFrequency",column = "crawl_frequency",jdbcType = JdbcType.INTEGER),
             @Result(property = "crawlStatus",column = "crawl_status",jdbcType = JdbcType.INTEGER),
     })
-    List<TdreamTask> queryAllTaskList();
+    List<TdreamTask> queryAllTaskListByWebsiteId(@Param("websiteId")Integer websiteId);
 
 
 }

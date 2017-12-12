@@ -41,7 +41,6 @@ public class ScheduleTask {
     /**
      * 定时初始化任务
      */
-    //每隔2个小时触发一次
     @Scheduled(cron = "0 0 0-23/1 * * ?")
     public void initTask_TWO_HOURS(){
         Runnable r1 = new Runnable(){

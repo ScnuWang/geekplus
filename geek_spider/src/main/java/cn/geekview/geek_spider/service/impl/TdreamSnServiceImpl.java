@@ -126,7 +126,7 @@ public class TdreamSnServiceImpl implements TdreamCrawlService{
             e.printStackTrace();
             logger.error(e.getMessage());
         }
-        List<TdreamTask> taskList = taskMapper.queryAllTaskList();
+        List<TdreamTask> taskList = taskMapper.queryAllTaskListByWebsiteId(Constant.WEBSITE_ID_SUNING);
         for (Map.Entry<String,TdreamTask> entry : urlMap.entrySet()) {
             TdreamTask task = entry.getValue();
             if (!taskList.contains(task)){
@@ -372,15 +372,10 @@ public class TdreamSnServiceImpl implements TdreamCrawlService{
             if (executorService.isTerminated()){
                 break;
             }
-//            try {
-//                Thread.sleep(1000);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
         }
         long time = System.currentTimeMillis()-startTime;
         System.out.println("苏宁抓取项目总共花费时间："+time/1000+"秒");
-
+        //处理抓取状态是等待抓取，但是下次抓取时间已经过期的任务
         taskService.queryTaskListByCrawlStatus(updateDateTime,Constant.WEBSITE_ID_SUNING);
     }
 }

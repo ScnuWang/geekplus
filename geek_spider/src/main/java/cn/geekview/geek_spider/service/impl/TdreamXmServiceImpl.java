@@ -3,7 +3,9 @@ package cn.geekview.geek_spider.service.impl;
 import cn.geekview.geek_spider.entity.mapper.TdreamTaskMapper;
 import cn.geekview.geek_spider.entity.mapper.TdreamXmItemMapper;
 import cn.geekview.geek_spider.entity.mapper.TdreamXmProductMapper;
-import cn.geekview.geek_spider.entity.model.*;
+import cn.geekview.geek_spider.entity.model.TdreamTask;
+import cn.geekview.geek_spider.entity.model.TdreamXmItem;
+import cn.geekview.geek_spider.entity.model.TdreamXmProduct;
 import cn.geekview.geek_spider.service.TdreamCrawlService;
 import cn.geekview.geek_spider.util.CommonUtils;
 import cn.geekview.geek_spider.util.Constant;
@@ -99,7 +101,7 @@ public class TdreamXmServiceImpl implements TdreamCrawlService {
          * 2、如果任务列表里面有抓取状态为等待抓取，但是下次抓取的时间已经过期，这种任务要重新激活，修改他的下次抓取时间
          *      为离当前最近的原本应该抓取的时间
          */
-        List<TdreamTask> taskList = taskMapper.queryAllTaskList();
+        List<TdreamTask> taskList = taskMapper.queryAllTaskListByWebsiteId(Constant.WEBSITE_ID_XIAOMI);
         for (Map.Entry<String,TdreamTask> entry : urlMap.entrySet()) {
             TdreamTask task = entry.getValue();
             //根据平台编号、项目原始ID、抓取频率判断相同的任务是否已经存在
@@ -109,7 +111,7 @@ public class TdreamXmServiceImpl implements TdreamCrawlService {
             }
         }
         long time = System.currentTimeMillis()-startTime;
-        System.out.println(" 初始化任务总共花费时间："+time/1000+"秒");
+        System.out.println("小米初始化任务总共花费时间："+time/1000+"秒");
     }
 
     /**
@@ -256,16 +258,10 @@ public class TdreamXmServiceImpl implements TdreamCrawlService {
             if (executorService.isTerminated()){
                 break;
             }
-//            try {
-//                Thread.sleep(1000);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
         }
         long time = System.currentTimeMillis()-startTime;
         System.out.println("小米抓取项目总共花费时间："+time/1000+"秒");
-
-
+        //处理抓取状态是等待抓取，但是下次抓取时间已经过期的任务
         taskService.queryTaskListByCrawlStatus(updateDateTime,Constant.WEBSITE_ID_XIAOMI);
     }
 

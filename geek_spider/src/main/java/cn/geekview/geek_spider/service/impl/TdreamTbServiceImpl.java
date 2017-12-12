@@ -145,7 +145,7 @@ public class TdreamTbServiceImpl implements TdreamCrawlService {
          * 2、如果任务列表里面有抓取状态为等待抓取，但是下次抓取的时间已经过期，这种任务要重新激活，修改他的下次抓取时间
          *      为离当前最近的原本应该抓取的时间
          */
-        List<TdreamTask> taskList = taskMapper.queryAllTaskList();
+        List<TdreamTask> taskList = taskMapper.queryAllTaskListByWebsiteId(Constant.WEBSITE_ID_TAOBAO);
         for (Map.Entry<String,TdreamTask> entry : urlMap.entrySet()) {
             TdreamTask task = entry.getValue();
             //根据平台编号、项目原始ID、抓取频率判断相同的任务是否已经存在
@@ -155,7 +155,7 @@ public class TdreamTbServiceImpl implements TdreamCrawlService {
             }
         }
         long time = System.currentTimeMillis()-startTime;
-        System.out.println(" 淘宝初始化任务总共花费时间："+time/1000+"秒");
+        System.out.println("淘宝初始化任务总共花费时间："+time/1000+"秒");
     }
 
     /**
@@ -288,7 +288,7 @@ public class TdreamTbServiceImpl implements TdreamCrawlService {
         }
         long time = System.currentTimeMillis()-startTime;
         System.out.println("淘宝抓取项目总共花费时间："+time/1000+"秒");
-
+        //处理抓取状态是等待抓取，但是下次抓取时间已经过期的任务
         taskService.queryTaskListByCrawlStatus(updateDateTime,Constant.WEBSITE_ID_TAOBAO);
     }
 
