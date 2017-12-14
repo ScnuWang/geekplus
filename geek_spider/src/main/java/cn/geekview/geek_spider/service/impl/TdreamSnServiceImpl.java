@@ -170,6 +170,7 @@ public class TdreamSnServiceImpl implements TdreamCrawlService{
                         product.setForeverValue(0);
                         product.setProductUrl(ceawlUrl);
                         product.setCurrencySign(Constant.CNY);
+                        product.setUpdateDatetime(updateDateTime);
                         Elements elements = doc.select(".item-organizer.box img");
                         if(elements.size()>0){
                             product.setPersonName(elements.get(0).attr("alt"));

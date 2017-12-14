@@ -171,6 +171,7 @@ public class TdreamJdServiceImpl implements TdreamCrawlService{
                         product.setForeverValue(0);
                         product.setProductUrl(ceawlUrl);
                         product.setCurrencySign(Constant.CNY);
+                        product.setUpdateDatetime(updateDateTime);
                         Elements elements = doc.select("#projectError");
                         if(elements.size()>0){
                             product.setProductStatus("众筹异常");
