@@ -1,6 +1,7 @@
-package cn.geekview.geek_spider.util;
+package cn.geekview.util;
 
 import org.apache.commons.lang3.StringUtils;
+import org.lionsoul.jcseg.util.StringUtil;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -48,5 +49,37 @@ public class CommonUtils {
         ResponseEntity responseEntity = restTemplate.exchange(url, HttpMethod.GET,httpEntity,String.class);
         String result = ((String) responseEntity.getBody()).trim();
         return result;
+    }
+
+
+    public static boolean isMailAddress(String str){
+        int atIndex = str.indexOf('@');
+        if ( atIndex == -1 ) {
+            return false;
+        }
+
+        if ( ! StringUtil.isLetterOrNumeric(str, 0, atIndex) ) {
+            return false;
+        }
+
+        int ptIndex, ptStart = atIndex + 1;
+        while ( (ptIndex = str.indexOf('.', ptStart)) > 0 ) {
+            if ( ptIndex == ptStart ) {
+                return false;
+            }
+
+            if ( ! StringUtil.isLetterOrNumeric(str, ptStart, ptIndex) ) {
+                return false;
+            }
+
+            ptStart = ptIndex + 1;
+        }
+
+        if ( ptStart < str.length()
+                && ! StringUtil.isLetterOrNumeric(str, ptStart, str.length()) ) {
+            return false;
+        }
+
+        return true;
     }
 }

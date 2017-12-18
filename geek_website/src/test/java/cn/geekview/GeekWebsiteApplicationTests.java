@@ -1,4 +1,4 @@
-package cn.geekview.geek_website;
+package cn.geekview;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
