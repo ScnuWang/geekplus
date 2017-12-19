@@ -94,4 +94,19 @@ public class TdreamUser {
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
     }
+
+    @Override
+    public String toString() {
+        return "TdreamUser{" +
+                "pkId=" + pkId +
+                ", email='" + email + '\'' +
+                ", nickName='" + nickName + '\'' +
+                ", password='" + password + '\'' +
+                ", openid='" + openid + '\'' +
+                ", gender=" + gender +
+                ", registerTime=" + registerTime +
+                ", userStatus=" + userStatus +
+                ", remark='" + remark + '\'' +
+                '}';
+    }
 }

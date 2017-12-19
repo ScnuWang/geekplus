@@ -20,7 +20,7 @@ public class MapperTest {
     public void test(){
         TdreamUser user =new TdreamUser();
         user.setEmail("scnu_wang@163.com");
-        user.setPassword("123456");
-        userMapper.insert(user);
+        user.setPassword("20171214");
+        System.out.println(userMapper.queryByEamilAndPassword(user));
     }
 }
