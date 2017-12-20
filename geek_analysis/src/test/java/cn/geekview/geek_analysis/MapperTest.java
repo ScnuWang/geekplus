@@ -1,7 +1,8 @@
 package cn.geekview.geek_analysis;
 
 
-import cn.geekview.entity.mapper.TdreamTbProductMapper;
+import cn.geekview.entity.mapper.primary.TdreamTbProduct_PrimaryMapper;
+import cn.geekview.entity.mapper.secondary.TdreamTbProduct_SecondaryMapper;
 import cn.geekview.entity.model.TdreamTbProduct;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,11 +17,20 @@ import java.util.List;
 public class MapperTest {
 
     @Autowired
-    private TdreamTbProductMapper productMapper;
+    private TdreamTbProduct_PrimaryMapper product_primaryMapper;
+
+    @Autowired
+    private TdreamTbProduct_SecondaryMapper product_secondaryMapper;
 
     @Test
     public void test(){
-       List<TdreamTbProduct> productList =  productMapper.queryProductPriceTrend(5,"20070923");
+       List<TdreamTbProduct> productList =  product_primaryMapper.queryProductPriceTrend(60,"20071201");
+       System.out.println(productList.toString());
+    }
+
+    @Test
+    public void test1(){
+       List<TdreamTbProduct> productList =  product_secondaryMapper.queryProductPriceTrend(60,"20071201");
        System.out.println(productList.toString());
     }
 }
