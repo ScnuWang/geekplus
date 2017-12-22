@@ -19,9 +19,5 @@ public class ProductController {
     @Autowired
     private TdreamTbServiceImpl tbService;
 
-    @RequestMapping(value = "/{crawlFrequence}/{originalId}",method = RequestMethod.GET)
-    public List<TdreamTbProduct> productTrend(@PathVariable("crawlFrequence")Integer crawlFrequence, @PathVariable("originalId")String originalId){
-        List<TdreamTbProduct> products = tbService.queryProductPriceTrend(crawlFrequence,originalId);
-        return products;
-    }
+
 }

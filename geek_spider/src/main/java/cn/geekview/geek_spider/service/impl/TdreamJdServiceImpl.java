@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.net.ConnectException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -32,7 +33,11 @@ import java.util.concurrent.Executors;
 public class TdreamJdServiceImpl implements TdreamCrawlService{
 
     protected Logger logger = Logger.getLogger(this.getClass());
+    //众筹中的URL
     private static String preCrawlProductlistUrl = "https://z.jd.com/bigger/search.html?status=2&page=";
+    //全部项目URL
+    private static String preCrawlAllProductlistUrl = "https://z.jd.com/bigger/search.html?page=";
+
     private static String productUrl = "https://z.jd.com";
 
     private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日");
@@ -60,40 +65,43 @@ public class TdreamJdServiceImpl implements TdreamCrawlService{
             Document document = Jsoup.parse(result);
             //获取总的项目数
             Integer total = Integer.valueOf(document.select(".l-statistics.fr strong").text());
-            Integer page_num = (int)Math.ceil(total/16.0);
+            Integer page_num = (int) Math.ceil(total / 16.0);
             List<String> list = new ArrayList<>();
             for (int i = 1; i <= page_num; i++) {
-                list.add(preCrawlProductlistUrl+i);
+                list.add(preCrawlProductlistUrl + i);
             }
-            Runnable runnable  = new Runnable() {
+            Runnable runnable = new Runnable() {
                 private int order = 1;
-                public synchronized String getThreadName(){
-                    return "_线程_"+(order++);
+
+                public synchronized String getThreadName() {
+                    return "_线程_" + (order++);
                 }
-                public synchronized String getUrl(){
-                    if(list.size()>0){
+
+                public synchronized String getUrl() {
+                    if (list.size() > 0) {
                         return list.remove(0);
-                    } else{
+                    } else {
                         return null;
                     }
                 }
+
                 @Override
                 public void run() {
                     String url = null;
                     String result = null;
                     String threadname = getThreadName();
-                    while ((url = getUrl())!=null){
+                    while ((url = getUrl()) != null) {
                         result = CommonUtils.httpRequest_Get(url);
                         Document parse = Jsoup.parse(result);
                         Elements projectList = parse.select(".link-pic");
                         for (Element element : projectList) {
                             String link = element.attr("href").trim();
-                            if(!CommonUtils.isEmpty(link)){
-                                if(!link.startsWith("http://z.jd.com")){
+                            if (!CommonUtils.isEmpty(link)) {
+                                if (!link.startsWith("http://z.jd.com")) {
                                     link = productUrl + link;
                                 }
-                                String id = link.substring(link.lastIndexOf("/")+1,link.lastIndexOf("."));
-                                if(!CommonUtils.isEmpty(id)){
+                                String id = link.substring(link.lastIndexOf("/") + 1, link.lastIndexOf("."));
+                                if (!CommonUtils.isEmpty(id)) {
                                     //将待抓取的地址放入任务列表中
                                     TdreamTask task = new TdreamTask();
                                     task.setOriginalId(id);
@@ -104,8 +112,8 @@ public class TdreamJdServiceImpl implements TdreamCrawlService{
                                     task.setCrawlTime(dateTime.toDate());
                                     task.setNextCrawlTime(dateTime.plusMinutes(crawlFrequency).toDate());
                                     task.setWebsiteId(Constant.WEBSITE_ID_JINGDONG);
-                                    System.out.println("当前请求地址："+url+"线程名："+threadname);
-                                    urlMap.put(id,task);
+                                    System.out.println("当前请求地址：" + url + "线程名：" + threadname);
+                                    urlMap.put(id, task);
                                 }
                             }
                         }
@@ -117,8 +125,8 @@ public class TdreamJdServiceImpl implements TdreamCrawlService{
                 executorService.execute(runnable);
             }
             executorService.shutdown();
-            while (true){
-                if (executorService.isTerminated()){
+            while (true) {
+                if (executorService.isTerminated()) {
                     break;
                 }
                 Thread.sleep(1000);
@@ -301,11 +309,13 @@ public class TdreamJdServiceImpl implements TdreamCrawlService{
                         }
                         elements = doc.select(".pjc-name");
                         if(elements.size()>0){
-                            product.setPersonDesc(elements.get(0).text().trim());
+                            String personDesc = elements.get(0).text().trim();
+                            product.setPersonDesc(personDesc.length()>255?personDesc.substring(0,255):personDesc);
                         }else{
                             elements = doc.select(".promoters-title");
                             if(elements.size()>0){
-                                product.setPersonDesc(elements.get(0).text().trim());
+                                String personDesc = elements.get(0).text().trim();
+                                product.setPersonDesc(personDesc.length()>255?personDesc.substring(0,255):personDesc);
                             }
                         }
                         //子项目
@@ -332,7 +342,6 @@ public class TdreamJdServiceImpl implements TdreamCrawlService{
                                         item.setItemSupport(Integer.parseInt(numberList.get(0)));
                                     }
                                 }
-
                                 nodes = itemObj.select(".limit-num");
                                 if(nodes.size()>0){
                                     numberList = CommonUtils.getNumberList(nodes.get(0).text());
@@ -340,7 +349,6 @@ public class TdreamJdServiceImpl implements TdreamCrawlService{
                                         item.setItemTotal(Integer.parseInt(numberList.get(0)));
                                     }
                                 }
-
                                 nodes = itemObj.select("input");
                                 if(nodes.size()>0){
                                     String price = nodes.get(0).val();
@@ -354,7 +362,7 @@ public class TdreamJdServiceImpl implements TdreamCrawlService{
                                 if(nodes.size()>0){
                                     String desc = nodes.get(0).text().trim();
                                     if(!CommonUtils.isEmpty(desc)){
-                                        item.setItemDesc(desc);
+                                        item.setItemDesc(desc.length()>255?desc.substring(0,255):desc);
                                     }
                                 }
                                 item.setCurrencySign(Constant.CNY);

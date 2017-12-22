@@ -31,7 +31,11 @@ import java.util.regex.Pattern;
 public class TdreamSnServiceImpl implements TdreamCrawlService{
 
     protected Logger logger = Logger.getLogger(this.getClass());
+    //众筹中的项目URL
     private static String preCrawlProductlistUrl = "https://zc.suning.com/project/browseList.htm?t=02&pageNumber=";
+    //全部项目URL
+    private static String preCrawlAllProductlistUrl = "https://zc.suning.com/project/browseList.htm?pageNumber=";
+
     private static String productUrl = "https://zc.suning.com";
 
     private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -190,7 +194,8 @@ public class TdreamSnServiceImpl implements TdreamCrawlService{
                         }
                         elements = doc.select(".item-detail-intro");
                         if(elements.size()>0){
-                            product.setProductDesc(elements.text().trim());
+                            String productDesc = elements.text().trim();
+                            product.setProductDesc(productDesc.length()>255?productDesc.substring(0,255):productDesc);
                         }
                         elements = doc.select(".item-actor-num strong");
                         if(elements.size()>0){
@@ -318,7 +323,8 @@ public class TdreamSnServiceImpl implements TdreamCrawlService{
                                 }
                                 nodes = itemObj.select(".f14");
                                 if(nodes.size()>0){
-                                    item.setItemDesc(nodes.get(0).text().trim());
+                                    String itemDesc = nodes.get(0).text().trim();
+                                    item.setItemDesc(itemDesc.length()>255?itemDesc.substring(0,255):itemDesc);
                                 }
                                 item.setCurrencySign(Constant.CNY);
                                 //如果关键字段为空的，直接跳过

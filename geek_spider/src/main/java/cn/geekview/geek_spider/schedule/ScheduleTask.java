@@ -29,42 +29,44 @@ public class ScheduleTask {
     @Autowired
     private TdreamTaskServiceImpl taskService;
 
-
-
-    //每天中午十二点触发
-//    @Scheduled(cron = "0 0 12 * * ?")
-//    public void initTask_TWENTY_FOUR_HOURS(){
-//        Date dateTime = new DateTime(DateTime.now().getYear(),DateTime.now().getMonthOfYear(),DateTime.now().getDayOfMonth(),12,0,0).toDate();
-//        tbService.initTask(dateTime, Constant.TWENTY_FOUR_HOURS);
-//    }
-
     /**
      * 定时初始化任务
      */
+    //每天中午十二点触发
+    @Scheduled(cron = "0 10 12 * * ?")
+    public void initTask_TWENTY_FOUR_HOURS(){
+        initTask(new Date(),Constant.TWENTY_FOUR_HOURS);
+    }
+
     @Scheduled(cron = "0 0 0-23/1 * * ?")
-    public void initTask_TWO_HOURS(){
+//    @Scheduled(cron = "0 0-59/5 * * * ?")
+    public void initTask_ONE_HOURS(){
+        initTask(new Date(),Constant.FIVE_MINUTES);
+    }
+
+    public void initTask(Date updateDateTime,Integer crawlFrequency){
         Runnable r1 = new Runnable(){
             @Override
             public void run() {
-                tbService.initTask(new Date(), Constant.ONE_HOUR);
+                tbService.initTask(updateDateTime, crawlFrequency);
             }
         };
         Runnable r2 =  new Runnable(){
             @Override
             public void run() {
-                jdService.initTask(new Date(), Constant.ONE_HOUR);
+                jdService.initTask(updateDateTime, crawlFrequency);
             }
         };
         Runnable r3 =  new Runnable(){
             @Override
             public void run() {
-                snService.initTask(new Date(), Constant.ONE_HOUR);
+                snService.initTask(updateDateTime, crawlFrequency);
             }
         };
         Runnable r4 = new Runnable(){
             @Override
             public void run() {
-                xmService.initTask(new Date(),Constant.ONE_HOUR);
+                xmService.initTask(updateDateTime,crawlFrequency);
             }
         };
         new Thread(r1).start();

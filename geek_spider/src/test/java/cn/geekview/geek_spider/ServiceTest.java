@@ -34,18 +34,51 @@ public class ServiceTest {
 
     @Test
     public void test1(){
-        try {
-//            tbService.initTask(new Date(), Constant.FIVE_MINUTES);
-//            jdService.initTask(new Date(), Constant.FIVE_MINUTES);
-//            xmService.initTask(new Date(), Constant.FIVE_MINUTES);
-//            snService.initTask(new Date(), Constant.FIVE_MINUTES);
-//            tbService.crawlTask(new Date());
-//            jdService.crawlTask(new Date());
-//            xmService.crawlTask(new Date());
-//            snService.crawlTask(new Date());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        jdService.initTask(new Date(), 10);
     }
 
+    @Test
+    public void crawl_Task_FIVE_MINUTES(){
+        Runnable r1 = new Runnable(){
+            @Override
+            public void run() {
+                tbService.crawlTask(new Date());
+            }
+        };
+        Runnable r2 =  new Runnable(){
+            @Override
+            public void run() {
+                jdService.crawlTask(new Date());
+            }
+        };
+        Runnable r3 =  new Runnable(){
+            @Override
+            public void run() {
+                snService.crawlTask(new Date());
+            }
+        };
+        Runnable r4 = new Runnable(){
+            @Override
+            public void run() {
+                xmService.crawlTask(new Date());
+            }
+        };
+        new Thread(r1).start();
+        new Thread(r2).start();
+        new Thread(r3).start();
+        new Thread(r4).start();
+    }
+
+
+    public void initTask(Date updateDateTime,Integer crawlFrequency){
+
+        Runnable r2 =  new Runnable(){
+            @Override
+            public void run() {
+                jdService.initTask(updateDateTime, crawlFrequency);
+            }
+        };
+
+        new Thread(r2).start();
+    }
 }

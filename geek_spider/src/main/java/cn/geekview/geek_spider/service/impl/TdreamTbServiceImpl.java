@@ -16,6 +16,7 @@ import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -31,6 +32,8 @@ public class TdreamTbServiceImpl implements TdreamCrawlService {
     protected Logger logger = Logger.getLogger(this.getClass());
     //只抓取众筹中的，在地上上添加status=1
     private static String preCrawlProductlistUrl = "https://hstar-hi.alicdn.com/dream/ajax/getProjectList.htm?projectType=&type=6&sort=1&status=1&pageSize=100&page=";
+    //抓取全部项目的URL
+    private static String preCrawlAllProductlistUrl = "https://hstar-hi.alicdn.com/dream/ajax/getProjectList.htm?projectType=&type=6&sort=1&pageSize=100&page=";
 
     private static String crawlProductDetailUrl = "https://hstar-hi.alicdn.com/dream/ajax/getProjectForDetail.htm?id=";
 
@@ -133,6 +136,7 @@ public class TdreamTbServiceImpl implements TdreamCrawlService {
                 Thread.sleep(1000);
             }
         } catch (Exception e) {
+            //将异常请求加入任务表
             e.printStackTrace();
             logger.error(e.getMessage());
 //            String subject = "初始化淘宝任务异常：" +updateDateTime+"------->"+crawlFrequency;
@@ -190,13 +194,19 @@ public class TdreamTbServiceImpl implements TdreamCrawlService {
                             product.setOriginalId(originalId);
                             product.setCrawlFrequency(crawlFrequency);
                             product.setProductName(rootObject.getString("name"));
-                            product.setProductDesc(rootObject.getString("content"));
+                            String productdesc = rootObject.getString("content").trim();
+                            product.setProductDesc(productdesc.length()>255?productdesc.substring(0,255):productdesc);
                             product.setProductUrl(productUrl+originalId);
                             product.setProductImage("https:"+rootObject.getString("image"));
                             product.setProductVideo(rootObject.getString("video"));
                             product.setProductQrcode("https:"+rootObject.getString("qrcode"));
-                            product.setBeginDate(dateFormat.parse(rootObject.getString("begin_date")));
-                            product.setEndDate(dateFormat.parse(rootObject.getString("end_date")));
+                            try {
+                                product.setBeginDate(dateFormat.parse(rootObject.getString("begin_date")));
+                                product.setEndDate(dateFormat.parse(rootObject.getString("end_date")));
+                            }catch (ParseException e){
+                                product.setEndDate(null);
+                                product.setBeginDate(null);
+                            }
                             product.setUpdateDatetime(new DateTime(updateDateTime).toDate());
                             //设置任务状态，除了预热中、众筹中的项目均不再自动抓取
                             switch (rootObject.getInteger("status_value")){
@@ -220,7 +230,8 @@ public class TdreamTbServiceImpl implements TdreamCrawlService {
                             product.setRemainDay(rootObject.getInteger("remain_day"));
                             product.setPersonName(rootObject.getJSONObject("person").getString("name"));
                             product.setPersonImage(rootObject.getJSONObject("person").getString("image"));
-                            product.setPersonDesc(rootObject.getJSONObject("person").getString("desc"));
+                            String persondesc = rootObject.getJSONObject("person").getString("desc").trim();
+                            product.setPersonDesc(persondesc.length()>255?persondesc.substring(0,255):persondesc);
                             JSONArray items = rootObject.getJSONArray("items");
                             if(items.size()>0){
                                 List<TdreamTbItem> itemList = new ArrayList<TdreamTbItem>();
@@ -229,8 +240,10 @@ public class TdreamTbServiceImpl implements TdreamCrawlService {
                                     TdreamTbItem item = new TdreamTbItem();
                                     item.setOriginalItemId(itemObj.getString("item_id"));
                                     item.setItemTitle(itemObj.getString("title"));
-                                    item.setItemDesc(itemObj.getString("desc"));
-                                    item.setItemImage("https:"+itemObj.getString("images"));
+                                    String itemDesc = itemObj.getString("desc").trim();
+                                    item.setItemDesc(itemDesc.length()>255?itemDesc.substring(0,255):itemDesc);
+                                    String itemImage = "https:"+itemObj.getString("images").trim();
+                                    item.setItemImage(itemImage.length()>255?itemImage.substring(0,255):itemImage);
                                     item.setCurrencySign(Constant.CNY);
                                     item.setOriginalItemPrice(itemObj.getBigDecimal("price"));
                                     item.setItemPrice(itemObj.getBigDecimal("price"));

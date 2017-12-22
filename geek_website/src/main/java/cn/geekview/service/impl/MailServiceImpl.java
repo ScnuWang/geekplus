@@ -32,4 +32,5 @@ public class MailServiceImpl {
             logger.info("发送邮件失败："+e.getMessage());
         }
     }
+
 }
