@@ -1,7 +1,5 @@
 package cn.geekview.entity.model;
 
-import org.hibernate.validator.constraints.Email;
-
 import java.util.Date;
 
 public class TdreamUser {
@@ -20,6 +18,10 @@ public class TdreamUser {
     private Date registerTime;
 
     private Integer userStatus;
+
+    private String activeCode;
+
+    private Date exprieTime;
 
     private String remark;
 
@@ -87,6 +89,22 @@ public class TdreamUser {
         this.userStatus = userStatus;
     }
 
+    public String getActiveCode() {
+        return activeCode;
+    }
+
+    public void setActiveCode(String activeCode) {
+        this.activeCode = activeCode == null ? null : activeCode.trim();
+    }
+
+    public Date getExprieTime() {
+        return exprieTime;
+    }
+
+    public void setExprieTime(Date exprieTime) {
+        this.exprieTime = exprieTime;
+    }
+
     public String getRemark() {
         return remark;
     }
@@ -106,6 +124,8 @@ public class TdreamUser {
                 ", gender=" + gender +
                 ", registerTime=" + registerTime +
                 ", userStatus=" + userStatus +
+                ", activeCode='" + activeCode + '\'' +
+                ", exprieTime=" + exprieTime +
                 ", remark='" + remark + '\'' +
                 '}';
     }

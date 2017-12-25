@@ -2,6 +2,7 @@ package cn.geekview;
 
 import cn.geekview.entity.mapper.TdreamUserMapper;
 import cn.geekview.entity.model.TdreamUser;
+import cn.geekview.service.impl.MailServiceImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,9 @@ public class MapperTest {
     @Autowired
     private TdreamUserMapper userMapper;
 
+    @Autowired
+    private MailServiceImpl mailService;
+
 
     @Test
     public void test(){
@@ -23,4 +27,5 @@ public class MapperTest {
         user.setPassword("20171214");
         System.out.println(userMapper.queryByEamilAndPassword(user));
     }
+
 }

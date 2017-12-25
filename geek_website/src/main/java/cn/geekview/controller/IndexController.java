@@ -16,12 +16,12 @@ public class IndexController {
     //登录
     @RequestMapping(value = {"/login"})
     public String login(){
-        return "login";
+        return "user/login";
     }
 
     //注册
     @RequestMapping(value = {"/register"})
     public String register(){
-        return "register";
+        return "user/register";
     }
 }
