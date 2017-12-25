@@ -1,10 +1,9 @@
 package cn.geekview.entity.mapper;
 
 import cn.geekview.entity.model.TdreamUser;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
+
+import java.util.Date;
 
 public interface TdreamUserMapper {
 
@@ -51,4 +50,21 @@ public interface TdreamUserMapper {
     @Update(active_email)
     void active_email(TdreamUser user);
 
+    /**
+     * 根据邮箱和激活码查询
+     */
+    String queryByEmailAndActiveCode = "SELECT email from t_dream_user t where " +
+            "     t.email = #{email,jdbcType=VARCHAR} " +
+            "      and t.active_code = #{activeCode,jdbcType=VARCHAR}" +
+            "       and t.exprieTime > #{activeTime,jdbcType=TIMESTAMP}" ;
+    @Select(queryByEmailAndActiveCode)
+    String queryByEmailAndActiveCode(TdreamUser user, @Param("activeTime")Date activeTime);
+
+    /**
+     * 根据邮箱和激活码删除
+     */
+    String deleteByEmailAndActiveCode = "delete from t_dream_user where " +
+            "   t.email = #{email,jdbcType=VARCHAR} " +
+            "   and t.active_code = #{activeCode,jdbcType=VARCHAR}";
+    void deleteByEmailAndActiveCode(TdreamUser user);
 }
