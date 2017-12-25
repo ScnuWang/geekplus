@@ -101,8 +101,8 @@ public class UserServiceImpl {
     public TdreamReturnObject active_eamil(TdreamUser user){
         try {
             //判断激活的邮箱是否存在，已经是否已经超过激活时间，超过激活时间的删除注册记录，重新注册
-            String email = userMapper.queryByEmailAndActiveCode(user,new Date());
-            if (email!=null){
+            String result = userMapper.queryByEmailAndActiveCode(user);
+            if (result!=null){
                 user.setUserStatus(1);
                 userMapper.active_email(user);
                 returnObject.setReturnCode("1005");

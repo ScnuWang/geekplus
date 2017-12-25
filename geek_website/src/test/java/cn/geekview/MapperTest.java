@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Date;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class MapperTest {
@@ -23,9 +25,9 @@ public class MapperTest {
     @Test
     public void test(){
         TdreamUser user =new TdreamUser();
-        user.setEmail("scnu_wang@163.com");
-        user.setPassword("20171214");
-        System.out.println(userMapper.queryByEamilAndPassword(user));
+        user.setEmail("jason@geekview.cn");
+        user.setActiveCode("e68f00dd-7bbd-4153-84d1-8d245f1e0cb0");
+        System.out.println(userMapper.queryByEmailAndActiveCode(user));
     }
 
 }

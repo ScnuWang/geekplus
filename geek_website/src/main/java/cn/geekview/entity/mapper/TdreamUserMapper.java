@@ -55,16 +55,16 @@ public interface TdreamUserMapper {
      */
     String queryByEmailAndActiveCode = "SELECT email from t_dream_user t where " +
             "     t.email = #{email,jdbcType=VARCHAR} " +
-            "      and t.active_code = #{activeCode,jdbcType=VARCHAR}" +
-            "       and t.exprieTime > #{activeTime,jdbcType=TIMESTAMP}" ;
+            "      and t.active_code = #{activeCode,jdbcType=VARCHAR}" ;
     @Select(queryByEmailAndActiveCode)
-    String queryByEmailAndActiveCode(TdreamUser user, @Param("activeTime")Date activeTime);
+    String queryByEmailAndActiveCode(TdreamUser user);
 
     /**
      * 根据邮箱和激活码删除
      */
     String deleteByEmailAndActiveCode = "delete from t_dream_user where " +
-            "   t.email = #{email,jdbcType=VARCHAR} " +
-            "   and t.active_code = #{activeCode,jdbcType=VARCHAR}";
+            "   email = #{email,jdbcType=VARCHAR} " +
+            "   and active_code = #{activeCode,jdbcType=VARCHAR}";
+    @Delete(deleteByEmailAndActiveCode)
     void deleteByEmailAndActiveCode(TdreamUser user);
 }
