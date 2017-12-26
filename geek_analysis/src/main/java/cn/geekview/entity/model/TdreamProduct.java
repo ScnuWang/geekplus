@@ -2,16 +2,20 @@ package cn.geekview.entity.model;
 
 import lombok.Data;
 
-import java.math.BigDecimal;
 import java.util.Date;
-import java.util.List;
+
 @Data
-public class TdreamTbProduct {
+public class TdreamProduct {
+
     private Integer pkId;
 
-    private String originalId;
+    private Integer websiteId;
 
-    private Integer crawlFrequency;
+    private Integer originalId;
+
+    private Integer statusValue;
+
+    private String productStatus;
 
     private String productName;
 
@@ -31,27 +35,17 @@ public class TdreamTbProduct {
 
     private Date updateDatetime;
 
-    private String productStatus;
-
-    private Integer statusValue;
-
     private Integer foreverValue;
 
     private Integer focusCount;
 
-    private Integer supportCount;
-
     private String currencySign;
 
-    private BigDecimal originalTargetAmount;
+    private Long targetAmount;
 
-    private BigDecimal originalRasiedAmount;
+    private Long rasiedAmount;
 
-    private BigDecimal targetAmount;
-
-    private BigDecimal rasiedAmount;
-
-    private Integer finishPercent;
+    private Long finishPercent;
 
     private Integer remainDay;
 
@@ -68,16 +62,5 @@ public class TdreamTbProduct {
     private String reserve2;
 
     private String reserve3;
-
-    private List<TdreamTbItem> itemList;
-
-    public List<TdreamTbItem> getItemList() {
-        return itemList;
-    }
-
-    public void setItemList(List<TdreamTbItem> itemList) {
-        this.itemList = itemList;
-    }
-
 
 }

@@ -1,5 +1,8 @@
 package cn.geekview.entity.model;
 
+import lombok.Data;
+
+@Data
 public class TdreamRole {
     private Integer pkId;
 
@@ -9,35 +12,4 @@ public class TdreamRole {
 
     private Integer roleStatus;
 
-    public Integer getPkId() {
-        return pkId;
-    }
-
-    public void setPkId(Integer pkId) {
-        this.pkId = pkId;
-    }
-
-    public String getRoleName() {
-        return roleName;
-    }
-
-    public void setRoleName(String roleName) {
-        this.roleName = roleName == null ? null : roleName.trim();
-    }
-
-    public String getRoleSecurity() {
-        return roleSecurity;
-    }
-
-    public void setRoleSecurity(String roleSecurity) {
-        this.roleSecurity = roleSecurity == null ? null : roleSecurity.trim();
-    }
-
-    public Integer getRoleStatus() {
-        return roleStatus;
-    }
-
-    public void setRoleStatus(Integer roleStatus) {
-        this.roleStatus = roleStatus;
-    }
 }

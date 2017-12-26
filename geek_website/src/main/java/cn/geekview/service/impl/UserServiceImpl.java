@@ -54,6 +54,9 @@ public class UserServiceImpl {
             String result = userMapper.emailIsExist(user);
             if (result==null){
                 userMapper.insert(user);
+                //发送激活邮件
+                String email_cert_url = email_certfication_url+email+"&activeCode="+activeCode;
+                mailService.sendHtmlMail(email,"极客视界--邮箱激活","激活邮箱请点击：<a href='"+email_cert_url+"'>邮箱激活</a>");
                 returnObject.setReturnCode("1001");
                 returnObject.setReturnMessage("注册成功");
                 returnObject.setReturnObject(result);
@@ -66,11 +69,6 @@ public class UserServiceImpl {
             returnObject.setReturnCode("9999");
             returnObject.setReturnMessage("用户注册异常");
         }
-
-        //发送邮件
-        String email_cert_url = email_certfication_url+email+"&activeCode="+activeCode;
-        mailService.sendHtmlMail(email,"极客视界--邮箱激活","激活邮箱请点击：<a href='"+email_cert_url+"'>邮箱激活</a>");
-
         return returnObject;
     }
 

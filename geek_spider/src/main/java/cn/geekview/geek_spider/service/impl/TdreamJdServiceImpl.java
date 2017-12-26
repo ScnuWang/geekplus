@@ -177,6 +177,7 @@ public class TdreamJdServiceImpl implements TdreamCrawlService{
                         product.setOriginalId(originalId);
                         product.setCrawlFrequency(crawlFrequency);
                         product.setForeverValue(0);
+                        product.setSupportCount(0);//设置默认值，如果在解析的时候结果为空，会出现错误
                         product.setProductUrl(ceawlUrl);
                         product.setCurrencySign(Constant.CNY);
                         product.setUpdateDatetime(updateDateTime);
