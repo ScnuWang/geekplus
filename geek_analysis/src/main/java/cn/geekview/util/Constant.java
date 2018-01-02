@@ -1,4 +1,4 @@
-package cn.geekview.geek_analysis.util;
+package cn.geekview.util;
 
 /**
  * 公共常量类

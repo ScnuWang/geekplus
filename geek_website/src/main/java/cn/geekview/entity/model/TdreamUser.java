@@ -1,16 +1,19 @@
 package cn.geekview.entity.model;
 
 import lombok.Data;
+import lombok.NonNull;
 
 import java.util.Date;
 @Data
 public class TdreamUser {
     private Integer pkId;
 
+//    @NonNull
     private String email;
 
     private String nickName;
 
+//    @NonNull
     private String password;
 
     private String openid;

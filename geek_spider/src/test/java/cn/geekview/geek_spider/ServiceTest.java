@@ -34,7 +34,8 @@ public class ServiceTest {
 
     @Test
     public void test1(){
-        jdService.initTask(new Date(), 10);
+//        tbService.initTask(new Date(), 5);
+        tbService.crawlTask(new Date());
     }
 
     @Test
@@ -75,7 +76,7 @@ public class ServiceTest {
         Runnable r2 =  new Runnable(){
             @Override
             public void run() {
-                jdService.initTask(updateDateTime, crawlFrequency);
+                tbService.initTask(updateDateTime, crawlFrequency);
             }
         };
 

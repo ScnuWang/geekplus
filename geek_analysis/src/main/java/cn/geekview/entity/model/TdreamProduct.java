@@ -2,6 +2,7 @@ package cn.geekview.entity.model;
 
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Data
@@ -11,7 +12,7 @@ public class TdreamProduct {
 
     private Integer websiteId;
 
-    private Integer originalId;
+    private String originalId;
 
     private Integer statusValue;
 
@@ -41,11 +42,11 @@ public class TdreamProduct {
 
     private String currencySign;
 
-    private Long targetAmount;
+    private BigDecimal targetAmount;
 
-    private Long rasiedAmount;
+    private BigDecimal rasiedAmount;
 
-    private Long finishPercent;
+    private Integer finishPercent;
 
     private Integer remainDay;
 

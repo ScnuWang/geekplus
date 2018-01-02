@@ -50,5 +50,9 @@
       AND
         original_id = #{originalId,jdbcType=VARCHAR}
   </select>
+  <!--查询根据原始编号查询产品-->
+  <select id="queryByOriginalId" resultMap="BaseResultMap">
+      SELECT * FROM t_dream_tb_product t WHERE t.original_id = #{originalId,jdbcType=VARCHAR} ORDER BY t.update_datetime DESC LIMIT 1
+  </select>
 
 </mapper>

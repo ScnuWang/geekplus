@@ -29,6 +29,7 @@ public class UserController {
 
         String email = user.getEmail();
         String password = user.getPassword();
+
         //判断关键字段是否为空
         if (StringUtils.isEmpty(email)||StringUtils.isEmpty(password)){
             return "user/login";
