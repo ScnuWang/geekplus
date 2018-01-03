@@ -56,7 +56,7 @@ public interface TdreamProduct_PrimaryMapper {
     /**
      * 根据平台编号以及原始编号判断是否已经存在
      */
-    String queryByWebsiteIdAndOriginalId = "Select pk_id,original_id  from t_dream_product " +
+    String queryByWebsiteIdAndOriginalId = "Select pk_id,original_id,update_datetime  from t_dream_product " +
             "   where website_id = #{websiteId,jdbcType=INTEGER}" +
             "   and  original_id = #{originalId,jdbcType=VARCHAR}" +
             "   limit 1";
@@ -65,6 +65,7 @@ public interface TdreamProduct_PrimaryMapper {
     @Results({
             @Result(column = "pk_id",property = "pkId",jdbcType = JdbcType.INTEGER),
             @Result(column = "original_id",property = "originalId",jdbcType = JdbcType.INTEGER),
+            @Result(column = "update_datetime",property = "updateDatetime",jdbcType = JdbcType.INTEGER),
     })
     TdreamProduct queryByWebsiteIdAndOriginalId(@Param("websiteId") Integer websiteId, @Param("originalId") String originalId);
 

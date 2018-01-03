@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.geekview.entity.mapper.primary.TdreamTbProduct_PrimaryMapper">
-  <resultMap id="BaseResultMap" type="cn.geekview.entity.model.TdreamTbProduct">
+<mapper namespace="cn.geekview.entity.mapper.primary.TdreamSnProduct_PrimaryMapper">
+  <resultMap id="BaseResultMap" type="cn.geekview.entity.model.TdreamSnProduct">
     <id column="pk_id" jdbcType="INTEGER" property="pkId" />
     <result column="original_id" jdbcType="VARCHAR" property="originalId" />
     <result column="crawl_frequency" jdbcType="INTEGER" property="crawlFrequency" />
@@ -55,7 +55,7 @@
           target_amount,
           rasied_amount
       FROM
-          t_dream_tb_product
+          t_dream_sn_product
       WHERE
           crawl_frequency = #{crawlFrequence,jdbcType=INTEGER}
       AND original_id = #{originalId,jdbcType=VARCHAR}
@@ -65,7 +65,7 @@
       SELECT
           *
       FROM
-          t_dream_tb_product t
+          t_dream_sn_product t
       WHERE
           t.original_id = #{originalId,jdbcType=VARCHAR} ORDER BY t.update_datetime DESC LIMIT 1
   </select>
@@ -74,13 +74,13 @@
       SELECT
           A.*
       FROM
-          t_dream_tb_product A,
+          t_dream_sn_product A,
           (
               SELECT
                   t.original_id,
                   MAX(t.update_datetime) update_datetime
               FROM
-                  t_dream_tb_product t
+                  t_dream_sn_product t
               GROUP BY
                   t.original_id
           ) B

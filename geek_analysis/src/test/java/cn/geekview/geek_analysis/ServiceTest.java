@@ -1,7 +1,6 @@
 package cn.geekview.geek_analysis;
 
-import cn.geekview.service.impl.TdreamProductServiceImpl;
-import cn.geekview.service.impl.TdreamWebsiteServiceImpl;
+import cn.geekview.service.impl.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +16,24 @@ public class ServiceTest {
     @Autowired
     private TdreamProductServiceImpl product;
 
+    @Autowired
+    private TdreamTbProductServiceImpl tdreamTbProductService;
+
+    @Autowired
+    private TdreamSnProductServiceImpl tdreamSnProductService;
+
+    @Autowired
+    private TdreamJdProductServiceImpl tdreamJdProductService;
+
+    @Autowired
+    private TdreamXmProductServiceImpl tdreamXmProductService;
+
 
     @Test
     public void test(){
-        product.insertOrUpdate(1,"20072767");
+        tdreamTbProductService.insertOrUpdateProduct();
+        tdreamJdProductService.insertOrUpdateProduct();
+        tdreamSnProductService.insertOrUpdateProduct();
+        tdreamXmProductService.insertOrUpdateProduct();
     }
 }

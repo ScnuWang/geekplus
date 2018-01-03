@@ -2,6 +2,7 @@ package cn.geekview.service.impl;
 
 import cn.geekview.entity.mapper.primary.TdreamProduct_PrimaryMapper;
 import cn.geekview.entity.mapper.primary.TdreamTbProduct_PrimaryMapper;
+import cn.geekview.entity.model.BasicProduct;
 import cn.geekview.entity.model.TdreamProduct;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,31 +15,27 @@ public class TdreamProductServiceImpl {
     private TdreamProduct_PrimaryMapper productPrimaryMapper;
 
 
-    @Autowired
-    private TdreamTbProduct_PrimaryMapper tbProductPrimaryMapper;
-
-
     /**
      * 插入或更新t_dream_product表
      * @param websiteId
-     * @param originalId
+     * @param resourceProduct 平台产品对象
      */
-    public void insertOrUpdate(Integer websiteId,String originalId){
-        //查询平台项目
-        Object object = tbProductPrimaryMapper.queryByOriginalId(originalId);
+    public void insertOrUpdate(Integer websiteId,BasicProduct resourceProduct){
         //Bean复制,排除pkId属性
         TdreamProduct product = new TdreamProduct();
-        BeanUtils.copyProperties(object,product,"pkId");
+        BeanUtils.copyProperties(resourceProduct,product,"pkId");
         product.setWebsiteId(websiteId);
         //判断是否已经存在
-        TdreamProduct result = productPrimaryMapper.queryByWebsiteIdAndOriginalId(websiteId,originalId);
-        if (result==null){
+        TdreamProduct resultProduct = productPrimaryMapper.queryByWebsiteIdAndOriginalId(websiteId,product.getOriginalId());
+        if (resultProduct==null){
             //插入数据库
             productPrimaryMapper.insert(product);
         }else {
-            //更新数据库
-            product.setPkId(result.getPkId());
-            productPrimaryMapper.update(product);
+            //更新数据库：需要对比一下时间，避免旧的数据覆盖最新的数据
+            if (resultProduct.getUpdateDatetime().getTime()<product.getUpdateDatetime().getTime()){
+                product.setPkId(resultProduct.getPkId());
+                productPrimaryMapper.update(product);
+            }
         }
     }
 

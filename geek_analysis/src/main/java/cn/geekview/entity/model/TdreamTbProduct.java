@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 @Data
-public class TdreamTbProduct {
+public class TdreamTbProduct extends BasicProduct{
     private Integer pkId;
 
     private String originalId;
@@ -70,14 +70,5 @@ public class TdreamTbProduct {
     private String reserve3;
 
     private List<TdreamTbItem> itemList;
-
-    public List<TdreamTbItem> getItemList() {
-        return itemList;
-    }
-
-    public void setItemList(List<TdreamTbItem> itemList) {
-        this.itemList = itemList;
-    }
-
 
 }

@@ -17,5 +17,10 @@ public interface TdreamTbProduct_PrimaryMapper {
      * @return
      */
     TdreamTbProduct queryByOriginalId(@Param("originalId") String orignalId);
+
+    /**
+     * 查询所有产品的最新数据
+     */
+    List<TdreamTbProduct> queryAllProduct();
 }
 

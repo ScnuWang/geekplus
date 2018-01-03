@@ -4,19 +4,13 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 import java.util.Date;
-
 @Data
-public class TdreamProduct extends BasicProduct{
-
+public class TdreamSnProduct extends BasicProduct{
     private Integer pkId;
-
-    private Integer websiteId;
 
     private String originalId;
 
-    private Integer statusValue;
-
-    private String productStatus;
+    private Integer crawlFrequency;
 
     private String productName;
 
@@ -36,11 +30,21 @@ public class TdreamProduct extends BasicProduct{
 
     private Date updateDatetime;
 
+    private String productStatus;
+
+    private Integer statusValue;
+
     private Integer foreverValue;
 
     private Integer focusCount;
 
+    private Integer supportCount;
+
     private String currencySign;
+
+    private BigDecimal originalTargetAmount;
+
+    private BigDecimal originalRasiedAmount;
 
     private BigDecimal targetAmount;
 

@@ -1,6 +1,6 @@
 package cn.geekview.controller;
 
-import cn.geekview.service.impl.TdreamTbServiceImpl;
+import cn.geekview.service.impl.TdreamTbProductServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ProductController {
 
     @Autowired
-    private TdreamTbServiceImpl tbService;
+    private TdreamTbProductServiceImpl tbService;
 
     /**
      *  新建一张总的产品表，平台总统计表，单个产品分析表用的时候加缓存（但是数据一直在变化，所以要解决缓存的有效性）
