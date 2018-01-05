@@ -40,6 +40,8 @@ public class TdreamProduct extends BasicProduct{
 
     private Integer focusCount;
 
+    private Integer supportCount;
+
     private String currencySign;
 
     private BigDecimal targetAmount;

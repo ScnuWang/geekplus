@@ -6,6 +6,7 @@ import org.apache.ibatis.type.JdbcType;
 
 public interface TdreamProduct_PrimaryMapper {
 
+
     /**
      *  更新数据
      *
@@ -13,6 +14,7 @@ public interface TdreamProduct_PrimaryMapper {
     String update = "update t_dream_product set " +
             "   status_value = #{statusValue,jdbcType=INTEGER}," +
             "   product_status = #{productStatus,jdbcType=VARCHAR}," +
+            "   support_count = #{supportCount,jdbcType=INTEGER}," +
             "   focus_count = #{focusCount,jdbcType=INTEGER}," +
             "   rasied_amount = #{rasiedAmount,jdbcType=DECIMAL}," +
             "   finish_percent = #{finishPercent,jdbcType=INTEGER}," +
@@ -30,21 +32,21 @@ public interface TdreamProduct_PrimaryMapper {
             "      product_desc, product_url, product_image, \n" +
             "      product_video, product_qrcode, begin_date, \n" +
             "      end_date, update_datetime, forever_value, \n" +
-            "      focus_count, currency_sign, target_amount, \n" +
-            "      rasied_amount, finish_percent, remain_day, \n" +
-            "      person_name, person_desc, person_image, \n" +
-            "      reserve1, reserve2, \n" +
-            "      reserve3)\n" +
+            "      support_count, focus_count, currency_sign, \n" +
+            "      target_amount, rasied_amount, finish_percent, \n" +
+            "      remain_day, person_name, person_desc, \n" +
+            "      person_image, reserve1, \n" +
+            "      reserve2, reserve3)\n" +
             "    values (#{pkId,jdbcType=INTEGER}, #{websiteId,jdbcType=INTEGER}, #{originalId,jdbcType=VARCHAR}, \n" +
             "      #{statusValue,jdbcType=INTEGER}, #{productStatus,jdbcType=VARCHAR}, #{productName,jdbcType=VARCHAR}, \n" +
             "      #{productDesc,jdbcType=VARCHAR}, #{productUrl,jdbcType=VARCHAR}, #{productImage,jdbcType=VARCHAR}, \n" +
             "      #{productVideo,jdbcType=VARCHAR}, #{productQrcode,jdbcType=VARCHAR}, #{beginDate,jdbcType=TIMESTAMP}, \n" +
             "      #{endDate,jdbcType=TIMESTAMP}, #{updateDatetime,jdbcType=TIMESTAMP}, #{foreverValue,jdbcType=INTEGER}, \n" +
-            "      #{focusCount,jdbcType=INTEGER}, #{currencySign,jdbcType=VARCHAR}, #{targetAmount,jdbcType=DECIMAL}, \n" +
-            "      #{rasiedAmount,jdbcType=DECIMAL}, #{finishPercent,jdbcType=INTEGER}, #{remainDay,jdbcType=INTEGER}, \n" +
-            "      #{personName,jdbcType=VARCHAR}, #{personDesc,jdbcType=VARCHAR}, #{personImage,jdbcType=VARCHAR}, \n" +
-            "      #{reserve1,jdbcType=VARCHAR}, #{reserve2,jdbcType=VARCHAR}, \n" +
-            "      #{reserve3,jdbcType=VARCHAR})";
+            "      #{supportCount,jdbcType=INTEGER}, #{focusCount,jdbcType=INTEGER}, #{currencySign,jdbcType=VARCHAR}, \n" +
+            "      #{targetAmount,jdbcType=DECIMAL}, #{rasiedAmount,jdbcType=DECIMAL}, #{finishPercent,jdbcType=DECIMAL}, \n" +
+            "      #{remainDay,jdbcType=INTEGER}, #{personName,jdbcType=VARCHAR}, #{personDesc,jdbcType=VARCHAR}, \n" +
+            "      #{personImage,jdbcType=VARCHAR}, #{reserve1,jdbcType=VARCHAR}, \n" +
+            "      #{reserve2,jdbcType=VARCHAR}, #{reserve3,jdbcType=VARCHAR})";
 
     @Insert(insert)
     void insert(TdreamProduct product);

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.geekview.entity.mapper.primary.TdreamProduct_PrimaryMapper">
+  <resultMap id="BaseResultMap" type="cn.geekview.entity.model.TdreamProduct">
+    <id column="pk_id" jdbcType="INTEGER" property="pkId" />
+    <result column="website_id" jdbcType="INTEGER" property="websiteId" />
+    <result column="original_id" jdbcType="VARCHAR" property="originalId" />
+    <result column="status_value" jdbcType="INTEGER" property="statusValue" />
+    <result column="product_status" jdbcType="VARCHAR" property="productStatus" />
+    <result column="product_name" jdbcType="VARCHAR" property="productName" />
+    <result column="product_desc" jdbcType="VARCHAR" property="productDesc" />
+    <result column="product_url" jdbcType="VARCHAR" property="productUrl" />
+    <result column="product_image" jdbcType="VARCHAR" property="productImage" />
+    <result column="product_video" jdbcType="VARCHAR" property="productVideo" />
+    <result column="product_qrcode" jdbcType="VARCHAR" property="productQrcode" />
+    <result column="begin_date" jdbcType="TIMESTAMP" property="beginDate" />
+    <result column="end_date" jdbcType="TIMESTAMP" property="endDate" />
+    <result column="update_datetime" jdbcType="TIMESTAMP" property="updateDatetime" />
+    <result column="forever_value" jdbcType="INTEGER" property="foreverValue" />
+    <result column="support_count" jdbcType="INTEGER" property="supportCount" />
+    <result column="focus_count" jdbcType="INTEGER" property="focusCount" />
+    <result column="currency_sign" jdbcType="VARCHAR" property="currencySign" />
+    <result column="target_amount" jdbcType="DECIMAL" property="targetAmount" />
+    <result column="rasied_amount" jdbcType="DECIMAL" property="rasiedAmount" />
+    <result column="finish_percent" jdbcType="DECIMAL" property="finishPercent" />
+    <result column="remain_day" jdbcType="INTEGER" property="remainDay" />
+    <result column="person_name" jdbcType="VARCHAR" property="personName" />
+    <result column="person_desc" jdbcType="VARCHAR" property="personDesc" />
+    <result column="person_image" jdbcType="VARCHAR" property="personImage" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="reserve1" jdbcType="VARCHAR" property="reserve1" />
+    <result column="reserve2" jdbcType="VARCHAR" property="reserve2" />
+    <result column="reserve3" jdbcType="VARCHAR" property="reserve3" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    pk_id, website_id, original_id, status_value, product_status, product_name, product_desc,
+    product_url, product_image, product_video, product_qrcode, begin_date, end_date,
+    update_datetime, forever_value, support_count, focus_count, currency_sign, target_amount,
+    rasied_amount, finish_percent, remain_day, person_name, person_desc, person_image,
+    update_time, reserve1, reserve2, reserve3
+  </sql>
+  <select id="queryProductsByWebsiteId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_dream_product
+    where website_id = #{websiteId,jdbcType=INTEGER}
+  </select>
+
+</mapper>

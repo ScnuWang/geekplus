@@ -24,7 +24,7 @@ public class TdreamSnProductServiceImpl {
     /**
      * 查询产品记录并插入或修改t_dream_product
      */
-    public void insertOrUpdateProduct(){
+    public void analysis(){
         //获取平台最新的所有的产品数据
         List<TdreamSnProduct> products = productPrimaryMapper.queryAllProduct();
         for (TdreamSnProduct product : products) {

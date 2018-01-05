@@ -16,6 +16,8 @@ public class TdreamWebsite {
 
     private Integer websiteType;
 
+    private Date updateDatetime;
+
     private Integer crawlStatus;
 
     private Integer rankStatus;
@@ -28,7 +30,7 @@ public class TdreamWebsite {
 
     private Integer totalProducts;
 
-    private Long averageFinish;
+    private Double averageFinish;
 
     private BigDecimal amountIncreaseDay;
 

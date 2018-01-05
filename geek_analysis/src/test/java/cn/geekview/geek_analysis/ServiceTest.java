@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.Date;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
 public class ServiceTest {
@@ -31,9 +33,9 @@ public class ServiceTest {
 
     @Test
     public void test(){
-        tdreamTbProductService.insertOrUpdateProduct();
-        tdreamJdProductService.insertOrUpdateProduct();
-        tdreamSnProductService.insertOrUpdateProduct();
-        tdreamXmProductService.insertOrUpdateProduct();
+        tdreamTbProductService.analysis(new Date());
+//        tdreamJdProductService.analysis();
+//        tdreamSnProductService.analysis();
+//        tdreamXmProductService.analysis();
     }
 }

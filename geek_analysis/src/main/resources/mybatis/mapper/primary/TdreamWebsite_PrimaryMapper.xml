@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.geekview.entity.mapper.primary.TdreamWebsite_PrimaryMapper">
+  <resultMap id="BaseResultMap" type="cn.geekview.entity.model.TdreamWebsite">
+    <id column="pk_id" jdbcType="INTEGER" property="pkId" />
+    <result column="website_id" jdbcType="INTEGER" property="websiteId" />
+    <result column="website_name" jdbcType="VARCHAR" property="websiteName" />
+    <result column="website_status" jdbcType="INTEGER" property="websiteStatus" />
+    <result column="website_type" jdbcType="INTEGER" property="websiteType" />
+    <result column="update_datetime" jdbcType="TIMESTAMP" property="updateDatetime" />
+    <result column="crawl_status" jdbcType="INTEGER" property="crawlStatus" />
+    <result column="rank_status" jdbcType="INTEGER" property="rankStatus" />
+    <result column="analysis_status" jdbcType="INTEGER" property="analysisStatus" />
+    <result column="total_amount" jdbcType="DECIMAL" property="totalAmount" />
+    <result column="total_supportPeople" jdbcType="INTEGER" property="totalSupportpeople" />
+    <result column="total_products" jdbcType="INTEGER" property="totalProducts" />
+    <result column="average_finish" jdbcType="DECIMAL" property="averageFinish" />
+    <result column="amount_increase_day" jdbcType="DECIMAL" property="amountIncreaseDay" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="reserve1" jdbcType="VARCHAR" property="reserve1" />
+    <result column="reserve2" jdbcType="VARCHAR" property="reserve2" />
+    <result column="reserve3" jdbcType="VARCHAR" property="reserve3" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    pk_id, website_id, website_name, website_status, website_type, update_datetime, crawl_status, 
+    rank_status, analysis_status, total_amount, total_supportPeople, total_products, 
+    average_finish, amount_increase_day, update_time, reserve1, reserve2, reserve3
+  </sql>
+
+  <insert id="insert" parameterType="cn.geekview.entity.model.TdreamWebsite">
+         insert into t_dream_website (pk_id, website_id, website_name,
+              website_status, website_type, crawl_status,
+              rank_status, analysis_status, total_amount,
+              total_supportPeople, total_products, average_finish,
+              amount_increase_day, reserve1,
+              reserve2, reserve3)
+            values (#{pkId,jdbcType=INTEGER}, #{websiteId,jdbcType=INTEGER}, #{websiteName,jdbcType=VARCHAR},
+              1,1, 1,
+              1, 1, #{totalAmount,jdbcType=DECIMAL},
+              #{totalSupportpeople,jdbcType=INTEGER}, #{totalProducts,jdbcType=INTEGER}, #{averageFinish,jdbcType=DECIMAL},
+              #{amountIncreaseDay,jdbcType=DECIMAL},  #{reserve1,jdbcType=VARCHAR},
+              #{reserve2,jdbcType=VARCHAR}, #{reserve3,jdbcType=VARCHAR})
+  </insert>
+
+  <select id="queryWebsiteDataByWebsiteId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+     SELECT
+          t.website_id,
+          SUM(t.rasied_amount) AS total_amount,
+          SUM(t.support_count) AS total_supportPeople,
+          COUNT(DISTINCT t.original_id) AS total_products,
+          s.average_finish,
+          d.amount_increase_day
+      FROM
+          t_dream_product t,
+          (
+              SELECT
+                  COUNT(t.original_id) AS average_finish
+              FROM
+                  t_dream_product t
+              WHERE
+                  t.status_value = 3
+              AND t.website_id = 1
+          ) s,
+          (
+              SELECT
+                  SUM(t.rasied_amount) AS amount_increase_day
+              FROM
+                  t_dream_product t
+              WHERE
+                  t.update_datetime = '2018-01-02 01:00:00'
+              AND t.website_id = 1
+          ) d
+      WHERE
+          t.website_id = 1
+      AND t.update_datetime = '2018-01-03 14:00:00'
+  </select>
+</mapper>
