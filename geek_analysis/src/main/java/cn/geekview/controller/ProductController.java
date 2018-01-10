@@ -18,7 +18,11 @@ public class ProductController {
     @Autowired
     private TdreamWebsiteServiceImpl websiteService;
 
-    @GetMapping("/allwebsite")
+    /**
+     *  查询每天中午12点的平台数据
+     * @return
+     */
+    @GetMapping("/allwebsiteinfo")
     public List<TdreamWebsite> allWebsite(){
         DateTime dateTime = new DateTime(DateTime.now().getYear(),DateTime.now().getMonthOfYear(),DateTime.now().getDayOfMonth(),12,0,0);
         return websiteService.queryByUpdateDateTime(dateTime.toDate());
