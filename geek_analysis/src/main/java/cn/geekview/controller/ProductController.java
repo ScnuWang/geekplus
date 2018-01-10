@@ -1,16 +1,30 @@
 package cn.geekview.controller;
 
-import cn.geekview.service.impl.TdreamTbProductServiceImpl;
+import cn.geekview.entity.model.TdreamWebsite;
+import cn.geekview.service.impl.TdreamWebsiteServiceImpl;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/product")
 public class ProductController {
 
     @Autowired
-    private TdreamTbProductServiceImpl tbService;
+    private TdreamWebsiteServiceImpl websiteService;
+
+    @GetMapping("/allwebsite")
+    public List<TdreamWebsite> allWebsite(){
+        DateTime dateTime = new DateTime(DateTime.now().getYear(),DateTime.now().getMonthOfYear(),DateTime.now().getDayOfMonth(),12,0,0);
+        return websiteService.queryByUpdateDateTime(dateTime.toDate());
+    }
+
+
 
     /**
      *  新建一张总的产品表，平台总统计表，单个产品分析表用的时候加缓存（但是数据一直在变化，所以要解决缓存的有效性）

@@ -48,7 +48,7 @@
     where website_id = #{websiteId,jdbcType=INTEGER}
   </select>
 
-  <select id="queryProductsAndStatusByWebsiteId" resultType="java.lang.Integer">
+  <select id="queryProductsByWebsiteIdAndStatus" resultType="java.lang.Integer">
     select
     count(original_id)
     from t_dream_product

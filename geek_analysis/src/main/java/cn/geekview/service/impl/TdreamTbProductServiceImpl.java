@@ -52,11 +52,12 @@ public class TdreamTbProductServiceImpl {
         //更新时间
         website.setUpdateDatetime(updateDateTime);
         //成功的项目个数
-        Integer successProductCounts  = productService.queryProductsAndStatusByWebsiteId(Constant.WEBSITE_ID_TAOBAO,Constant.FUNDING_STATUAS_SUCCESS);
-        //平均完成率
-        website.setAverageFinish(new BigDecimal(successProductCounts * 100).divide(new BigDecimal(website.getTotalProducts()), RoundingMode.HALF_UP));
+        Integer successProductCounts  = productService.queryProductsByWebsiteIdAndStatus(Constant.WEBSITE_ID_TAOBAO,Constant.FUNDING_STATUAS_SUCCESS);
+        Integer fildProductCounts = productService.queryProductsByWebsiteIdAndStatus(Constant.WEBSITE_ID_TAOBAO,Constant.FUNDING_STATUAS_FAIL);
+        //平均完成率 : 成功的项目数除以成功加失败的项目数
+        website.setAverageFinish(new BigDecimal(successProductCounts * 100).divide(new BigDecimal(successProductCounts+fildProductCounts), RoundingMode.HALF_UP));
         //查询前一天的总金额，如果前一天为空视为0
-        TdreamWebsite website_totalAmount = websiteService.queryTotalAmountByUpdateDateTimeAndwebsiteId(Constant.WEBSITE_ID_TAOBAO,new DateTime(updateDateTime).plusDays(-1).toDate());
+        TdreamWebsite website_totalAmount = websiteService.queryByUpdateDateTimeAndwebsiteId(Constant.WEBSITE_ID_TAOBAO,new DateTime(updateDateTime).plusDays(-1).toDate());
         //日增长金额
         if (website_totalAmount !=null){
             website.setAmountIncreaseDay(website.getTotalAmount().add(website_totalAmount.getTotalAmount().multiply(new BigDecimal("-1"))));

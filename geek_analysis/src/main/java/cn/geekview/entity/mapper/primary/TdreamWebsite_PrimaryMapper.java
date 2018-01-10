@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.type.JdbcType;
 
 import java.util.Date;
+import java.util.List;
 
 public interface TdreamWebsite_PrimaryMapper {
 
@@ -41,15 +42,40 @@ public interface TdreamWebsite_PrimaryMapper {
     /**
      * 根据时间和平台编号查询众筹金额
      */
-    String queryTotalAmountByUpdateDateTimeAndwebsiteId = "select total_amount from t_dream_website " +
+    String queryByUpdateDateTimeAndwebsiteId = "select total_amount,total_supportPeople," +
+            "   total_products,average_finish,amount_increase_day  from t_dream_website " +
             "   where update_datetime = #{updateDatetime,jdbcType=TIMESTAMP}" +
             "   and website_id = #{websiteId,jdbcType=INTEGER}";
 
-    @Select(queryTotalAmountByUpdateDateTimeAndwebsiteId)
+    @Select(queryByUpdateDateTimeAndwebsiteId)
     @Results({
-            @Result(column = "total_amount",jdbcType = JdbcType.DECIMAL,property = "totalAmount")
+            @Result(column = "total_amount",jdbcType = JdbcType.DECIMAL,property = "totalAmount"),
+            @Result(column = "total_supportPeople",jdbcType = JdbcType.DECIMAL,property = "totalSupportpeople"),
+            @Result(column = "total_products",jdbcType = JdbcType.DECIMAL,property = "totalProducts"),
+            @Result(column = "average_finish",jdbcType = JdbcType.DECIMAL,property = "averageFinish"),
+            @Result(column = "amount_increase_day",jdbcType = JdbcType.DECIMAL,property = "amountIncreaseDay"),
     })
-    TdreamWebsite queryTotalAmountByUpdateDateTimeAndwebsiteId(@Param("websiteId")Integer websiteId, @Param("updateDatetime")Date updateDatetime);
+    TdreamWebsite queryByUpdateDateTimeAndwebsiteId(@Param("websiteId")Integer websiteId, @Param("updateDatetime")Date updateDatetime);
+
+
+    /**
+     * 根据时间查询所有平台的数据
+     */
+    String queryByUpdateDateTime = "select website_id,website_name,total_amount,total_supportPeople," +
+            "   total_products,average_finish,amount_increase_day  from t_dream_website " +
+            "   where update_datetime = #{updateDatetime,jdbcType=TIMESTAMP}";
+    @Select(queryByUpdateDateTime)
+    @Results({
+            @Result(column = "website_id",jdbcType = JdbcType.VARCHAR,property = "websiteId"),
+            @Result(column = "website_name",jdbcType = JdbcType.VARCHAR,property = "websiteName"),
+            @Result(column = "total_amount",jdbcType = JdbcType.DECIMAL,property = "totalAmount"),
+            @Result(column = "total_supportPeople",jdbcType = JdbcType.INTEGER,property = "totalSupportpeople"),
+            @Result(column = "total_products",jdbcType = JdbcType.INTEGER,property = "totalProducts"),
+            @Result(column = "average_finish",jdbcType = JdbcType.DECIMAL,property = "averageFinish"),
+            @Result(column = "amount_increase_day",jdbcType = JdbcType.DECIMAL,property = "amountIncreaseDay"),
+    })
+    List<TdreamWebsite> queryByUpdateDateTime(@Param("updateDatetime")Date updateDatetime);
+
 
 
 }

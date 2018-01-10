@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  *  平台整体分析
@@ -17,13 +18,22 @@ public class TdreamWebsiteServiceImpl {
     private TdreamWebsite_PrimaryMapper websitePrimaryMapper;
 
     /**
-     *  根据时间和平台编号查询众筹金额
+     *  根据时间和平台编号查询
      * @param websiteId 平台编号
      * @param updateDatetime 更新时间
      * @return
      */
-    TdreamWebsite queryTotalAmountByUpdateDateTimeAndwebsiteId(Integer websiteId , Date updateDatetime){
-        return websitePrimaryMapper.queryTotalAmountByUpdateDateTimeAndwebsiteId(websiteId,updateDatetime);
+    public TdreamWebsite queryByUpdateDateTimeAndwebsiteId(Integer websiteId , Date updateDatetime){
+        return websitePrimaryMapper.queryByUpdateDateTimeAndwebsiteId(websiteId,updateDatetime);
+    }
+
+    /**
+     *  根据时间查询所有平台的数据
+     * @param updateDatetime 更新时间
+     * @return
+     */
+    public List<TdreamWebsite> queryByUpdateDateTime(Date updateDatetime){
+        return websitePrimaryMapper.queryByUpdateDateTime(updateDatetime);
     }
 
     /**

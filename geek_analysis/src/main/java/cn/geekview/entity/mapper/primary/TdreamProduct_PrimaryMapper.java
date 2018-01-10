@@ -12,7 +12,8 @@ public interface TdreamProduct_PrimaryMapper {
      * @param statusValue
      * @return
      */
-    Integer  queryProductsAndStatusByWebsiteId(@Param("websiteId")Integer websiteId,@Param("statusValue")Integer statusValue);
+    Integer  queryProductsByWebsiteIdAndStatus(@Param("websiteId")Integer websiteId,@Param("statusValue")Integer statusValue);
+
 
 
     /**

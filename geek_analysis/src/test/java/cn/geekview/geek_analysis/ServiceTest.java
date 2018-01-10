@@ -39,6 +39,5 @@ public class ServiceTest {
         tdreamJdProductService.analysis(dateTime.toDate());
         tdreamSnProductService.analysis(dateTime.toDate());
         tdreamXmProductService.analysis(dateTime.toDate());
-        //飞天诚信、易见股份、四方精创、安妮股份、中通国脉
     }
 }

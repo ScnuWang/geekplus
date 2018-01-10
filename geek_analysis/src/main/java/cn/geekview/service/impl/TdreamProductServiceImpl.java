@@ -16,10 +16,6 @@ public class TdreamProductServiceImpl {
     @Autowired
     private TdreamProduct_PrimaryMapper productPrimaryMapper;
 
-
-
-
-
     /**
      * 插入或更新t_dream_product表
      * @param websiteId
@@ -47,7 +43,8 @@ public class TdreamProductServiceImpl {
     /**
      *   根据平台编号查询指定众筹状态的产品个数
      */
-    public Integer queryProductsAndStatusByWebsiteId(Integer websiteId,Integer statusValue){
-        return productPrimaryMapper.queryProductsAndStatusByWebsiteId(websiteId,statusValue);
+    public Integer queryProductsByWebsiteIdAndStatus(Integer websiteId,Integer statusValue){
+        return productPrimaryMapper.queryProductsByWebsiteIdAndStatus(websiteId,statusValue);
     }
+
 }
