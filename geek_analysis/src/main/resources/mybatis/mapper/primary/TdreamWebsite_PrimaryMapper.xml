@@ -29,49 +29,28 @@
 
   <insert id="insert" parameterType="cn.geekview.entity.model.TdreamWebsite">
          insert into t_dream_website (pk_id, website_id, website_name,
-              website_status, website_type, crawl_status,
+              website_status, website_type, update_datetime,crawl_status,
               rank_status, analysis_status, total_amount,
               total_supportPeople, total_products, average_finish,
               amount_increase_day, reserve1,
               reserve2, reserve3)
             values (#{pkId,jdbcType=INTEGER}, #{websiteId,jdbcType=INTEGER}, #{websiteName,jdbcType=VARCHAR},
-              1,1, 1,
+              1,1,#{updateDatetime,jdbcType=TIMESTAMP}, 1,
               1, 1, #{totalAmount,jdbcType=DECIMAL},
               #{totalSupportpeople,jdbcType=INTEGER}, #{totalProducts,jdbcType=INTEGER}, #{averageFinish,jdbcType=DECIMAL},
               #{amountIncreaseDay,jdbcType=DECIMAL},  #{reserve1,jdbcType=VARCHAR},
               #{reserve2,jdbcType=VARCHAR}, #{reserve3,jdbcType=VARCHAR})
   </insert>
 
-  <select id="queryWebsiteDataByWebsiteId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+  <select id="queryWebsiteDataByWebsiteId" resultMap="BaseResultMap" >
      SELECT
           t.website_id,
           SUM(t.rasied_amount) AS total_amount,
           SUM(t.support_count) AS total_supportPeople,
-          COUNT(DISTINCT t.original_id) AS total_products,
-          s.average_finish,
-          d.amount_increase_day
+          COUNT(DISTINCT t.original_id) AS total_products
       FROM
-          t_dream_product t,
-          (
-              SELECT
-                  COUNT(t.original_id) AS average_finish
-              FROM
-                  t_dream_product t
-              WHERE
-                  t.status_value = 3
-              AND t.website_id = 1
-          ) s,
-          (
-              SELECT
-                  SUM(t.rasied_amount) AS amount_increase_day
-              FROM
-                  t_dream_product t
-              WHERE
-                  t.update_datetime = '2018-01-02 01:00:00'
-              AND t.website_id = 1
-          ) d
+          t_dream_product t
       WHERE
-          t.website_id = 1
-      AND t.update_datetime = '2018-01-03 14:00:00'
+          t.website_id = #{websiteId,jdbcType=INTEGER}
   </select>
 </mapper>

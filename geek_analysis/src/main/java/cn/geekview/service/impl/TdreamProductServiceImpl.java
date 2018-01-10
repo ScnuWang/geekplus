@@ -17,6 +17,9 @@ public class TdreamProductServiceImpl {
     private TdreamProduct_PrimaryMapper productPrimaryMapper;
 
 
+
+
+
     /**
      * 插入或更新t_dream_product表
      * @param websiteId
@@ -29,16 +32,22 @@ public class TdreamProductServiceImpl {
         product.setWebsiteId(websiteId);
         //判断是否已经存在
         TdreamProduct resultProduct = productPrimaryMapper.queryByWebsiteIdAndOriginalId(websiteId,product.getOriginalId());
-        if (resultProduct==null){
+        if ( resultProduct==null ){
             //插入数据库
             productPrimaryMapper.insert(product);
         }else {
             //更新数据库：需要对比一下时间，避免旧的数据覆盖最新的数据
-            if (resultProduct.getUpdateDatetime().getTime()<product.getUpdateDatetime().getTime()){
+            if (resultProduct.getUpdateDatetime().getTime() < product.getUpdateDatetime().getTime()){
                 product.setPkId(resultProduct.getPkId());
                 productPrimaryMapper.update(product);
             }
         }
     }
 
+    /**
+     *   根据平台编号查询指定众筹状态的产品个数
+     */
+    public Integer queryProductsAndStatusByWebsiteId(Integer websiteId,Integer statusValue){
+        return productPrimaryMapper.queryProductsAndStatusByWebsiteId(websiteId,statusValue);
+    }
 }

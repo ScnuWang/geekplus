@@ -30,7 +30,7 @@ public class TdreamWebsite {
 
     private Integer totalProducts;
 
-    private Double averageFinish;
+    private BigDecimal averageFinish;
 
     private BigDecimal amountIncreaseDay;
 

@@ -32,6 +32,7 @@
     <result column="reserve2" jdbcType="VARCHAR" property="reserve2" />
     <result column="reserve3" jdbcType="VARCHAR" property="reserve3" />
   </resultMap>
+
   <sql id="Base_Column_List">
     pk_id, website_id, original_id, status_value, product_status, product_name, product_desc,
     product_url, product_image, product_video, product_qrcode, begin_date, end_date,
@@ -39,6 +40,7 @@
     rasied_amount, finish_percent, remain_day, person_name, person_desc, person_image,
     update_time, reserve1, reserve2, reserve3
   </sql>
+
   <select id="queryProductsByWebsiteId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
@@ -46,4 +48,11 @@
     where website_id = #{websiteId,jdbcType=INTEGER}
   </select>
 
+  <select id="queryProductsAndStatusByWebsiteId" resultType="java.lang.Integer">
+    select
+    count(original_id)
+    from t_dream_product
+    where website_id = #{websiteId,jdbcType=INTEGER}
+    AND status_value = #{statusValue,jdbcType=INTEGER}
+  </select>
 </mapper>

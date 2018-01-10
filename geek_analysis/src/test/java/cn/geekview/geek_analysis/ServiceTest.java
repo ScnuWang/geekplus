@@ -1,6 +1,7 @@
 package cn.geekview.geek_analysis;
 
 import cn.geekview.service.impl.*;
+import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,9 +34,11 @@ public class ServiceTest {
 
     @Test
     public void test(){
-        tdreamTbProductService.analysis(new Date());
-//        tdreamJdProductService.analysis();
-//        tdreamSnProductService.analysis();
-//        tdreamXmProductService.analysis();
+        DateTime dateTime = new DateTime(DateTime.now().getYear(),DateTime.now().getMonthOfYear(),DateTime.now().getDayOfMonth(),12,0,0);
+        tdreamTbProductService.analysis(dateTime.toDate());
+        tdreamJdProductService.analysis(dateTime.toDate());
+        tdreamSnProductService.analysis(dateTime.toDate());
+        tdreamXmProductService.analysis(dateTime.toDate());
+        //飞天诚信、易见股份、四方精创、安妮股份、中通国脉
     }
 }

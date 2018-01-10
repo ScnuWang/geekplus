@@ -2,17 +2,23 @@ package cn.geekview.entity.mapper.primary;
 
 
 import cn.geekview.entity.model.TdreamWebsite;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.type.JdbcType;
+
+import java.util.Date;
 
 public interface TdreamWebsite_PrimaryMapper {
 
     /**
-     * 根据平台编号查询
+     * 根据平台编号查询平台相关总的数据
      */
     TdreamWebsite queryWebsiteDataByWebsiteId(@Param("websiteId")Integer websiteId);
 
 
+    /**
+     *  插入数据
+     * @param website
+     */
     void insert(TdreamWebsite website);
 
     /**
@@ -30,5 +36,20 @@ public interface TdreamWebsite_PrimaryMapper {
 
     @Update(updateDataByWebsiteId)
     void updateDataByWebsiteId(TdreamWebsite website);
+
+
+    /**
+     * 根据时间和平台编号查询众筹金额
+     */
+    String queryTotalAmountByUpdateDateTimeAndwebsiteId = "select total_amount from t_dream_website " +
+            "   where update_datetime = #{updateDatetime,jdbcType=TIMESTAMP}" +
+            "   and website_id = #{websiteId,jdbcType=INTEGER}";
+
+    @Select(queryTotalAmountByUpdateDateTimeAndwebsiteId)
+    @Results({
+            @Result(column = "total_amount",jdbcType = JdbcType.DECIMAL,property = "totalAmount")
+    })
+    TdreamWebsite queryTotalAmountByUpdateDateTimeAndwebsiteId(@Param("websiteId")Integer websiteId, @Param("updateDatetime")Date updateDatetime);
+
 
 }

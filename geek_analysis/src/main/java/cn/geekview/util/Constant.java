@@ -28,6 +28,15 @@ public class Constant {
     public static final Integer CRAWL_STATUAS_EXCEPTION = 3;
     public static final Integer CRAWL_STATUAS_STOP = 4;
 
+    /**
+     *  众筹状态
+     */
+    public static final Integer FUNDING_STATUAS_PREHEAT = 1;
+    public static final Integer FUNDING_STATUAS_PROCESSING = 2;
+    public static final Integer FUNDING_STATUAS_SUCCESS = 3;
+    public static final Integer FUNDING_STATUAS_FAIL = 4;
+    public static final Integer FUNDING_STATUAS_EXCEPTION = 5;
+
     public static final String CNY = "CNY";
 
 }

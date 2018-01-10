@@ -6,6 +6,14 @@ import org.apache.ibatis.type.JdbcType;
 
 public interface TdreamProduct_PrimaryMapper {
 
+    /**
+     *  根据平台编号查询指定众筹状态的产品个数
+     * @param websiteId
+     * @param statusValue
+     * @return
+     */
+    Integer  queryProductsAndStatusByWebsiteId(@Param("websiteId")Integer websiteId,@Param("statusValue")Integer statusValue);
+
 
     /**
      *  更新数据
