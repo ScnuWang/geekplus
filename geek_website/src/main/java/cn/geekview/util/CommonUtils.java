@@ -1,5 +1,9 @@
 package cn.geekview.util;
 
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.client.RestTemplate;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -43,6 +47,11 @@ public class CommonUtils {
         return flag;
     }
 
+    public static Object get(String url){
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity response = restTemplate.getForEntity(url,Object.class);
+        return response.getBody();
+    }
 
 
 }

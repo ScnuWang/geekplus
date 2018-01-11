@@ -1,10 +1,12 @@
 package cn.geekview.controller;
 
+import cn.geekview.entity.model.TdreamProduct;
 import cn.geekview.entity.model.TdreamWebsite;
 import cn.geekview.service.impl.TdreamWebsiteServiceImpl;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,6 +30,18 @@ public class ProductController {
         return websiteService.queryByUpdateDateTime(dateTime.toDate());
     }
 
+    /**
+     *  获取单个项目的详细信息
+     * @param productId 项目编号
+     * @return
+     */
+    @GetMapping("/detail/{productId}")
+    public TdreamProduct product(@PathVariable("productId")Integer productId){
+
+
+        return null;
+    }
+
 
 
     /**
@@ -37,7 +51,7 @@ public class ProductController {
 
 
     /**
-     *  插入产品总表：所有平台所有的产品保留最新的消息在这里面，目前全部加起来数据大概在2万多条数据
+     *  插入产品总表：所有平台所有的产品保留最新的消息在这里面，目前全部加起来数据大概不到3万多条数据
      */
     
 

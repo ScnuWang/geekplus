@@ -1,15 +1,23 @@
 package cn.geekview.controller;
 
+import cn.geekview.util.CommonUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/index")
 public class IndexController {
 
+    @Value("${product.allwebsiteinfo.url}")
+    private String allWebsiteInfoUrl;
+
     //首页
     @RequestMapping(value = {"/",""})
-    public String index(){
+    public Object allWebsite(Model model){
+        //查询每天的平台数据
+        model.addAttribute("websiteinfo",CommonUtils.get(allWebsiteInfoUrl));
         return "index";
     }
 
