@@ -1,10 +1,7 @@
 package cn.geekview.service.impl;
 
 
-import cn.geekview.entity.mapper.primary.TdreamSnProduct_PrimaryMapper;
 import cn.geekview.entity.mapper.primary.TdreamXmProduct_PrimaryMapper;
-import cn.geekview.entity.model.TdreamSnProduct;
-import cn.geekview.entity.model.TdreamTbProduct;
 import cn.geekview.entity.model.TdreamWebsite;
 import cn.geekview.entity.model.TdreamXmProduct;
 import cn.geekview.util.Constant;
@@ -52,8 +49,8 @@ public class TdreamXmProductServiceImpl {
         DateTime dateTime = new DateTime(updateDateTime);
         DateTime date = new DateTime(dateTime.getYear(),dateTime.getMonthOfYear(),dateTime.getDayOfMonth(),dateTime.getHourOfDay(),0,0);
         //获取离当前时间上一次抓取的时间点，左右时间范围为抓取时间间隔的一半
-        List<TdreamTbProduct> products = productPrimaryMapper.queryProduct_Newest(date.plusMinutes(-crawlFrequency/2).toDate(),date.plusMinutes(crawlFrequency/2).toDate());
-        for (TdreamTbProduct product : products) {
+        List<TdreamXmProduct> products = productPrimaryMapper.queryProduct_Newest(date.plusMinutes(-crawlFrequency/2).toDate(),date.plusMinutes(crawlFrequency/2).toDate());
+        for (TdreamXmProduct product : products) {
             productService.insertOrUpdate(Constant.WEBSITE_ID_XIAOMI,product);
         }
     }
