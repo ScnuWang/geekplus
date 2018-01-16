@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.type.JdbcType;
 
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 public interface TdreamWebsite_PrimaryMapper {
@@ -25,18 +26,17 @@ public interface TdreamWebsite_PrimaryMapper {
     /**
      * 根据平台编号更新数据
      */
-    String updateDataByWebsiteId = "update t_dream_website\n" +
+    String updateByUpdateDateTimeAndwebsiteId = "update t_dream_website\n" +
             "    set " +
-            "       update_datetime = #{updateDatetime,jdbcType=TIMESTAMP}," +
             "      total_amount = #{totalAmount,jdbcType=DECIMAL},\n" +
             "      total_supportPeople = #{totalSupportpeople,jdbcType=INTEGER},\n" +
             "      total_products = #{totalProducts,jdbcType=INTEGER},\n" +
             "      average_finish = #{averageFinish,jdbcType=DECIMAL},\n" +
             "      amount_increase_day = #{amountIncreaseDay,jdbcType=DECIMAL}" +
-            "    where website_id = #{websiteId,jdbcType=INTEGER}";
-
-    @Update(updateDataByWebsiteId)
-    void updateDataByWebsiteId(TdreamWebsite website);
+            "    where website_id = #{websiteId,jdbcType=INTEGER}" +
+            "   and  update_datetime = #{updateDatetime,jdbcType=TIMESTAMP}";
+    @Update(updateByUpdateDateTimeAndwebsiteId)
+    void updateByUpdateDateTimeAndwebsiteId(TdreamWebsite website);
 
 
     /**
@@ -76,6 +76,21 @@ public interface TdreamWebsite_PrimaryMapper {
     })
     List<TdreamWebsite> queryByUpdateDateTime(@Param("updateDatetime")Date updateDatetime);
 
+
+    /**
+     * 查询某个时间段内的每天的众筹金额增长
+     */
+    String queryByDateRange = "select website_id,amount_increase_day,update_datetime from  t_dream_website" +
+            "   where update_datetime > #{updateDatetimeStart,jdbcType=TIMESTAMP}" +
+            "   and update_datetime <= #{updateDatetimeEnd,jdbcType=TIMESTAMP}" +
+            "   order by update_datetime ASC";
+    @Select(queryByDateRange)
+    @Results({
+            @Result(column = "website_id",jdbcType = JdbcType.VARCHAR,property = "websiteId"),
+            @Result(column = "amount_increase_day",jdbcType = JdbcType.DECIMAL,property = "amountIncreaseDay"),
+            @Result(column = "update_datetime",jdbcType = JdbcType.TIMESTAMP,property = "updateDatetime"),
+    })
+    List<TdreamWebsite> queryByDateRange(@Param("updateDatetimeStart")Date updateDatetimeStart, @Param("updateDatetimeEnd")Date updateDatetimeEnd);
 
 
 }

@@ -4,6 +4,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -50,6 +51,12 @@ public class CommonUtils {
     public static Object get(String url){
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity response = restTemplate.getForEntity(url,Object.class);
+        return response.getBody();
+    }
+
+    public static Object get_parm(String url, Map parm){
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity response = restTemplate.getForEntity(url,Object.class,parm);
         return response.getBody();
     }
 

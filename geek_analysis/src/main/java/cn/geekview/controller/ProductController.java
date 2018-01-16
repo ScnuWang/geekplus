@@ -1,8 +1,11 @@
 package cn.geekview.controller;
 
 import cn.geekview.entity.model.TdreamProduct;
+import cn.geekview.entity.model.TdreamTbProduct;
 import cn.geekview.entity.model.TdreamWebsite;
+import cn.geekview.service.impl.TdreamTbProductServiceImpl;
 import cn.geekview.service.impl.TdreamWebsiteServiceImpl;
+import org.apache.ibatis.annotations.Param;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,15 +23,42 @@ public class ProductController {
     @Autowired
     private TdreamWebsiteServiceImpl websiteService;
 
+    @Autowired
+    private TdreamTbProductServiceImpl tbProductService;
+
+    /**
+     * 查询7天内个平台个资金增长情况
+     */
+    @GetMapping("/changeinfo")
+    public Map queryByDateRange(){
+        DateTime dateTime = new DateTime(DateTime.now().getYear(),DateTime.now().getMonthOfYear(),DateTime.now().getDayOfMonth(),12,0,0);
+        return websiteService.queryByDateRange(dateTime.toDate(),7);
+    }
+
+
     /**
      *  查询每天中午12点的平台数据
-     * @return
+     *  @return
      */
     @GetMapping("/allwebsiteinfo")
     public List<TdreamWebsite> allWebsite(){
         DateTime dateTime = new DateTime(DateTime.now().getYear(),DateTime.now().getMonthOfYear(),DateTime.now().getDayOfMonth(),12,0,0);
         return websiteService.queryByUpdateDateTime(dateTime.toDate());
     }
+
+
+    /**
+     *  根据抓取频率和原始编号获取项目
+     * @param crawlFrequence
+     * @param orignalId
+     * @return
+     */
+    @GetMapping("/indexhotproduct")
+    public List<TdreamTbProduct> indexHotProduct(@Param("crawlFrequence") Integer crawlFrequence,@Param("orignalId") String orignalId){
+        return tbProductService.queryProductPriceTrend(crawlFrequence,orignalId);
+    }
+
+
 
     /**
      *  获取单个项目的详细信息

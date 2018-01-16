@@ -69,10 +69,70 @@
         </div>
     </th:block>
 </div>
+
 <!--众筹平台信息结束-->
 <!--平台7天众筹金额变化曲线开始-->
 <div id="container"></div>
+<!--平台7天众筹金额变化曲线结束-->
+<!--热门项目开始-->
+<div class="panel panel-default" style="width: 100%;">
+    <div class="panel-heading">
+        <h3 class="panel-title" style="text-align: center">
+            热门项目
+        </h3>
+    </div>
+    <div class="panel-body">
+        <div id="product"></div>
+        <div id="people"></div>
+    </div>
+</div>
+<!--热门项目结束-->
+<div class="panel panel-default" style="width: 100%;">
+    <div class="panel-heading">
+        <h3 class="panel-title" style="text-align: center">
+            其它内容介绍
+        </h3>
+    </div>
+    <div class="panel-body">
+        <h3>其它内容介绍</h3>
+    </div>
+</div>
+</body>
+
+<footer style="text-align: center">
+    Copyright ©2014-2018 极客视界 All Rights Reserved
+    粤ICP备14037549号-1
+</footer>
 <script th:inline="javascript">
+    /*<![CDATA[*/
+    /*格式化时间*/
+    Date.prototype.format = function(fmt) {
+        var o = {
+            "M+" : this.getMonth()+1,                 //月份
+            "d+" : this.getDate(),                    //日
+            "h+" : this.getHours(),                   //小时
+            "m+" : this.getMinutes(),                 //分
+            "s+" : this.getSeconds(),                 //秒
+            "q+" : Math.floor((this.getMonth()+3)/3), //季度
+            "S"  : this.getMilliseconds()             //毫秒
+        };
+        if(/(y+)/.test(fmt)) {
+            fmt=fmt.replace(RegExp.$1, (this.getFullYear()+"").substr(4 - RegExp.$1.length));
+        }
+        for(var k in o) {
+            if(new RegExp("("+ k +")").test(fmt)){
+                fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));
+            }
+        }
+        return fmt;
+    };
+
+    var updateDatetimes  = /*[[${changeinfo.updateDatetime}]]*/ 'null';
+    var  x = [];
+    for (i=0;i< updateDatetimes.length;i++) {
+        x.push(new Date(updateDatetimes[i]).format("yy/MM/dd"));
+    }
+
     var chart = Highcharts.chart('container', {
         title: {
             text: '7天众筹金额变化曲线'
@@ -82,6 +142,10 @@
         },
         credits:{
             enabled : false
+        },
+        xAxis: {
+            categories: x,
+            crosshair: true
         },
         yAxis: {
             title: {
@@ -93,27 +157,22 @@
             align: 'right',
             verticalAlign: 'middle'
         },
-        plotOptions: {
-            series: {
-                label: {
-                    connectorAllowed: false
-                },
-                pointStart: 2010
-            }
-        },
         series: [{
             name: '淘宝',
-            data: [43934, 52503, 57177, 69658, 97031, 119931, 137133, 154175]
+            data: /*[[${changeinfo.taobao}]]*/ 'null'
         }, {
             name: '京东',
-            data: [24916, 24064, 29742, 29851, 32490, 30282, 38121, 40434]
+            data: /*[[${changeinfo.jingdong}]]*/ 'null'
         }, {
             name: '苏宁',
-            data: [11744, 17722, 16005, 19771, 20185, 24377, 32147, 39387]
+            data: /*[[${changeinfo.suning}]]*/ 'null'
         }, {
             name: '小米',
-            data: [null, null, 7988, 12169, 15112, 22452, 34400, 34227]
+            data: /*[[${changeinfo.xiaomi}]]*/ 'null'
         }],
+        tooltip: {
+            shared: true
+        },
         responsive: {
             rules: [{
                 condition: {
@@ -129,33 +188,124 @@
             }]
         }
     });
+
+
+
+    var updateDatetime = [];
+    var supportCount = [];
+    var focusCount = [];
+    var targetAmount = [];
+    var rasiedAmount = [];
+    var products = /*[[${products}]]*/ 'null';
+    for (var i =0;i< products.length;i++){
+        updateDatetime.push(new Date(products[i].updateDatetime).format("MM/dd hh:mm"));
+        supportCount.push(products[i].supportCount);
+        focusCount.push(products[i].focusCount);
+        targetAmount.push(products[i].targetAmount);
+        rasiedAmount.push(products[i].rasiedAmount)
+    }
+    $("#product").highcharts({
+        credits: {/*去除版本信息*/
+            enabled: false
+        },
+        title: {
+            text: /*[[${products[0].productName}]]*/ '极客视界'
+        },
+        subtitle: {
+            text: '数据来源：www.geekview.cn'
+        },
+        xAxis: {
+            categories: updateDatetime,
+            crosshair: true
+        },
+        yAxis: {
+            title: {
+                text: '众筹金额变化'
+            }
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle'
+        },
+        series: [{
+            name: '众筹金额',
+            data: rasiedAmount,
+            color:'#9B30FF'
+        }, {
+            name: '目标金额',
+            data: targetAmount,
+            color:'#87CEFF'
+        }],
+        tooltip: {
+            shared: true
+        },
+        responsive: {
+            rules: [{
+                condition: {
+                    maxWidth: 500
+                },
+                chartOptions: {
+                    legend: {
+                        layout: 'horizontal',/*水平布局*/
+                        align: 'center',/*设定图例在图表区中的水平对齐方式*/
+                        verticalAlign: 'bottom'/*设定图例在图表区中的垂直对齐方式*/
+                    }
+                }
+            }]
+        }
+    });
+    $("#people").highcharts({
+        credits: {/*去除版本信息*/
+            enabled: false
+        },
+        title: {
+            text: /*[[${products[0].productName}]]*/ '极客视界'
+        },
+        subtitle: {
+            text: '数据来源：www.geekview.cn'
+        },
+        xAxis: {
+            categories: updateDatetime,
+            crosshair: true
+        },
+        yAxis: {
+            title: {
+                text: '支持人数变化'
+            }
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle'
+        },
+        series: [{
+            name: '支持人数',
+            data: supportCount,
+            color: '#B3EE3A'
+        }, {
+            name: '关注人数',
+            data: focusCount,
+            color: '#98FB98'
+        }],
+        tooltip: {
+            shared: true
+        },
+        responsive: {
+            rules: [{
+                condition: {
+                    maxWidth: 500
+                },
+                chartOptions: {
+                    legend: {
+                        layout: 'horizontal',/*水平布局*/
+                        align: 'center',/*设定图例在图表区中的水平对齐方式*/
+                        verticalAlign: 'bottom'/*设定图例在图表区中的垂直对齐方式*/
+                    }
+                }
+            }]
+        }
+    });
+    /*]]>*/
 </script>
-<!--平台7天众筹金额变化曲线结束-->
-<!--热门项目开始-->
-<div class="panel panel-default" style="width: 100%;height: 400px">
-    <div class="panel-heading">
-        <h3 class="panel-title" style="text-align: center">
-            热门项目
-        </h3>
-    </div>
-    <div class="panel-body">
-        <h3>这里是一个热门项目的信息：项目名称、项目简介、项目金额变化、项目支持人数变化、关注人数变化</h3>
-    </div>
-</div>
-<div class="panel panel-default" style="width: 100%;height: 400px">
-    <div class="panel-heading">
-        <h3 class="panel-title" style="text-align: center">
-            其它内容介绍
-        </h3>
-    </div>
-    <div class="panel-body">
-        <h3>其它内容介绍</h3>
-    </div>
-</div>
-<!--热门项目结束-->
-</body>
-<footer style="text-align: center">
-    Copyright ©2014-2018 极客视界 All Rights Reserved
-    粤ICP备14037549号-1
-</footer>
 </html>

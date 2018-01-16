@@ -33,7 +33,7 @@ public class ScheduleTask {
      * 定时初始化任务
      */
     //每天中午十二点触发
-    @Scheduled(cron = "0 10 12 * * ?")
+    @Scheduled(cron = "0 0 12 * * ?")
     public void initTask_TWENTY_FOUR_HOURS(){
         initTask(new Date(),Constant.TWENTY_FOUR_HOURS);
     }

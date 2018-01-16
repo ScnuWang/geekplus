@@ -69,23 +69,14 @@
       WHERE
           t.original_id = #{originalId,jdbcType=VARCHAR} ORDER BY t.update_datetime DESC LIMIT 1
   </select>
-  <!--查询所有产品的最新数据-->
-  <select id="queryAllProduct" resultMap="BaseResultMap">
+  <!--查询某个时间点正在抓取的产品的最新数据-->
+  <select id="queryProduct_Newest" resultMap="BaseResultMap">
       SELECT
-          A.*
+      <include refid="Base_Column_List"/>
       FROM
-          t_dream_tb_product A,
-          (
-              SELECT
-                  t.original_id,
-                  MAX(t.update_datetime) update_datetime
-              FROM
-                  t_dream_tb_product t
-              GROUP BY
-                  t.original_id
-          ) B
+      t_dream_tb_product t
       WHERE
-          A.original_id = B.original_id
-      AND A.update_datetime = B.update_datetime
+      t.update_datetime &gt; #{beforeTime,jdbcType=TIMESTAMP}
+      AND t.update_datetime &lt; #{afterTime,jdbcType=TIMESTAMP}
   </select>
 </mapper>

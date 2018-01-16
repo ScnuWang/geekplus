@@ -1,14 +1,13 @@
 package cn.geekview.service.impl;
 
 import cn.geekview.entity.mapper.primary.TdreamWebsite_PrimaryMapper;
+import cn.geekview.entity.model.TdreamProduct;
 import cn.geekview.entity.model.TdreamWebsite;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  *  平台整体分析
@@ -18,6 +17,42 @@ public class TdreamWebsiteServiceImpl {
 
     @Autowired
     private TdreamWebsite_PrimaryMapper websitePrimaryMapper;
+
+
+    /**
+     *  查询某个时间段内的每天的众筹金额增长
+     * @param updateDatetime
+     * @param days
+     * @return
+     */
+    public Map queryByDateRange(Date updateDatetime,Integer days){
+        List<TdreamWebsite> websiteList =  websitePrimaryMapper.queryByDateRange(new DateTime(updateDatetime).plusDays(-days).toDate(),updateDatetime);
+        Map websiteMap = new HashMap();
+        LinkedList taobaolist = new LinkedList();
+        LinkedList jingdonglist = new LinkedList();
+        LinkedList suninglist = new LinkedList();
+        LinkedList xiaomilist = new LinkedList();
+        LinkedList datelist = new LinkedList();
+        for (TdreamWebsite website : websiteList) {
+            switch (website.getWebsiteId()){
+                case 1:taobaolist.add(website.getAmountIncreaseDay());break;
+                case 2:jingdonglist.add(website.getAmountIncreaseDay());break;
+                case 7:suninglist.add(website.getAmountIncreaseDay());break;
+                case 15:xiaomilist.add(website.getAmountIncreaseDay());break;
+            }
+            if (!datelist.contains(website.getUpdateDatetime())){
+                datelist.add(website.getUpdateDatetime());
+            }
+        }
+        websiteMap.put("taobao",taobaolist);
+        websiteMap.put("jingdong",jingdonglist);
+        websiteMap.put("suning",suninglist);
+        websiteMap.put("xiaomi",xiaomilist);
+        websiteMap.put("updateDatetime",datelist);
+        return websiteMap;
+    }
+
+
 
     /**
      *  根据时间和平台编号查询
@@ -39,15 +74,22 @@ public class TdreamWebsiteServiceImpl {
     }
 
     /**
-     *  插入数据
+     *  插入数据或者更新数据  更新时间固定为每天中午12点，方便后续处理，因为每天处理一次
      */
-    public  void insert(TdreamWebsite website){
-        websitePrimaryMapper.insert(website);
+    public  void insertOrUpdate(TdreamWebsite website){
+        //根据更新时间和平台编号查询是否已经存在
+         TdreamWebsite result_Website = websitePrimaryMapper.queryByUpdateDateTimeAndwebsiteId(website.getWebsiteId(),website.getUpdateDatetime());
+        if (result_Website == null) {
+            websitePrimaryMapper.insert(website);
+        }else {
+            //更新当天的数据记录
+            websitePrimaryMapper.updateByUpdateDateTimeAndwebsiteId(website);
+        }
     }
 
 
     /**
-     *  根据平台编号查询平台相关总的数据
+     *  根据平台编号统计（t_dream_product）平台相关总的数据
      * @param websiteId 平台编号
      * @return
      */

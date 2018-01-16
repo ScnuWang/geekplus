@@ -33,6 +33,9 @@ public interface TdreamProduct_PrimaryMapper {
     void update(TdreamProduct product);
 
 
+
+
+
     /**
      *  插入一条数据
      */
