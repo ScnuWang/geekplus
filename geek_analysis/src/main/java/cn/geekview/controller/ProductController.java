@@ -54,7 +54,7 @@ public class ProductController {
      * @return
      */
     @GetMapping("/indexhotproduct")
-    public List<TdreamTbProduct> indexHotProduct(@Param("crawlFrequence") Integer crawlFrequence,@Param("orignalId") String orignalId){
+    public List<TdreamTbProduct> indexHotProduct(@Param("crawlFrequence") Integer crawlFrequence,@Param("websiteId")Integer websiteId,@Param("orignalId") String orignalId){
         return tbProductService.queryProductPriceTrend(crawlFrequence,orignalId);
     }
 

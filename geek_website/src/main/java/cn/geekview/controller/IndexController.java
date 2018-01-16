@@ -32,7 +32,8 @@ public class IndexController {
         //首页热门项目
         Map maParm = new HashMap();
         maParm.put("crawlFrequence",60);
-        maParm.put("orignalId","20072095");
+        maParm.put("websiteId",1);
+        maParm.put("orignalId","20071011");
         model.addAttribute("products",CommonUtils.get(indexHotProductUrl));
         return "index";
     }

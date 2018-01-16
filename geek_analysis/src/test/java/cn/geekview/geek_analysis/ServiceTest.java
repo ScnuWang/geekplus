@@ -36,38 +36,38 @@ public class ServiceTest {
     @Test
     public void test(){
         DateTime dateTime = new DateTime();
-        tdreamTbProductService.analysis(Constant.ONE_HOUR,dateTime.toDate());
-        tdreamJdProductService.analysis(Constant.ONE_HOUR,dateTime.toDate());
-        tdreamSnProductService.analysis(Constant.ONE_HOUR,dateTime.toDate());
-        tdreamXmProductService.analysis(Constant.ONE_HOUR,dateTime.toDate());
-//        Runnable r1 = new Runnable(){
-//            @Override
-//            public void run() {
-//                tdreamTbProductService.analysis(dateTime.toDate());
-//            }
-//        };
-//        Runnable r2 =  new Runnable(){
-//            @Override
-//            public void run() {
-//                tdreamJdProductService.analysis(dateTime.toDate());
-//            }
-//        };
-//        Runnable r3 =  new Runnable(){
-//            @Override
-//            public void run() {
-//                tdreamSnProductService.analysis(dateTime.toDate());
-//            }
-//        };
-//        Runnable r4 = new Runnable(){
-//            @Override
-//            public void run() {
-//                tdreamXmProductService.analysis(dateTime.toDate());
-//            }
-//        };
-//        new Thread(r1).start();
-//        new Thread(r2).start();
-//        new Thread(r3).start();
-//        new Thread(r4).start();
+//        tdreamTbProductService.analysis(Constant.ONE_HOUR,dateTime.toDate());
+//        tdreamJdProductService.analysis(Constant.ONE_HOUR,dateTime.toDate());
+//        tdreamSnProductService.analysis(Constant.ONE_HOUR,dateTime.toDate());
+//        tdreamXmProductService.analysis(Constant.ONE_HOUR,dateTime.toDate());
+        Runnable r1 = new Runnable(){
+            @Override
+            public void run() {
+                tdreamTbProductService.analysis(Constant.ONE_HOUR,dateTime.toDate());
+            }
+        };
+        Runnable r2 =  new Runnable(){
+            @Override
+            public void run() {
+                tdreamJdProductService.analysis(Constant.ONE_HOUR,dateTime.toDate());
+            }
+        };
+        Runnable r3 =  new Runnable(){
+            @Override
+            public void run() {
+                tdreamSnProductService.analysis(Constant.ONE_HOUR,dateTime.toDate());
+            }
+        };
+        Runnable r4 = new Runnable(){
+            @Override
+            public void run() {
+                 tdreamXmProductService.analysis(Constant.ONE_HOUR,dateTime.toDate());
+            }
+        };
+        new Thread(r1).start();
+        new Thread(r2).start();
+        new Thread(r3).start();
+        new Thread(r4).start();
     }
 
     @Test

@@ -29,6 +29,9 @@ public class ScheduleTask {
     private TdreamXmProductServiceImpl tdreamXmProductService;
 
 
+    /**
+     *  定时抓取完毕之后半小时分析数据
+     */
     @Scheduled(cron = "0 20 17 * * ?")
     public void analysis_task(){
         DateTime dateTime = new DateTime(DateTime.now().getYear(),DateTime.now().getMonthOfYear(),15,12,0,0);
