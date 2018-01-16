@@ -21,6 +21,7 @@ public interface TdreamProduct_PrimaryMapper {
      *
      */
     String update = "update t_dream_product set " +
+            "   update_datetime = #{updateDatetime,jdbcType=TIMESTAMP}," +
             "   status_value = #{statusValue,jdbcType=INTEGER}," +
             "   product_status = #{productStatus,jdbcType=VARCHAR}," +
             "   support_count = #{supportCount,jdbcType=INTEGER}," +
