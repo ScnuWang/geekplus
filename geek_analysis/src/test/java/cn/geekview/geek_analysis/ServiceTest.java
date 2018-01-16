@@ -35,7 +35,7 @@ public class ServiceTest {
 
     @Test
     public void test(){
-        DateTime dateTime = new DateTime(DateTime.now().getYear(),DateTime.now().getMonthOfYear(),15,12,0,0);
+        DateTime dateTime = new DateTime();
         tdreamTbProductService.analysis(Constant.ONE_HOUR,dateTime.toDate());
         tdreamJdProductService.analysis(Constant.ONE_HOUR,dateTime.toDate());
         tdreamSnProductService.analysis(Constant.ONE_HOUR,dateTime.toDate());

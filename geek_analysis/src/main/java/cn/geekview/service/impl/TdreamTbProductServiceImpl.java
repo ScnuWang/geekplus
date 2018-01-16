@@ -46,9 +46,12 @@ public class TdreamTbProductServiceImpl {
             1. 获取平台最新抓取的所有的产品数据
             2. 获取离当前时间上一次抓取的时间点，左右时间范围为抓取时间间隔的一半
             3. 这样就只处理上线时仍在抓取的项目数据，对于之前的数据单独处理，这样可以提高后续每次分析的效率
+            4. 每个小时处理一次
          */
         DateTime dateTime = new DateTime(updateDateTime);
-        List<TdreamTbProduct> products = productPrimaryMapper.queryProduct_Newest(dateTime.plusMinutes(-crawlFrequency/2).toDate(),dateTime.plusMinutes(crawlFrequency/2).toDate());
+        DateTime date = new DateTime(dateTime.getYear(),dateTime.getMonthOfYear(),dateTime.getDayOfMonth(),dateTime.getHourOfDay(),0,0);
+        //获取离当前时间上一次抓取的时间点，左右时间范围为抓取时间间隔的一半
+        List<TdreamTbProduct> products = productPrimaryMapper.queryProduct_Newest(date.plusMinutes(-crawlFrequency/2).toDate(),date.plusMinutes(crawlFrequency/2).toDate());
         for (TdreamTbProduct product : products) {
             productService.insertOrUpdate(Constant.WEBSITE_ID_TAOBAO,product);
         }
