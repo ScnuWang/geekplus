@@ -1,21 +1,21 @@
 package cn.geekview;
 
-import cn.geekview.util.CommonUtils;
-import org.joda.time.DateTime;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-
+@Slf4j
 public class BasicTest {
     @Test
     public void test() throws ParseException {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd 12:00:00");
-        System.out.println(new DateTime(dateFormat.format(new Date())));
+        log.debug("dhfkahsd");
+        log.info("dfhaskldhfs");
+        log.error("dfhsakfkdl");
+        log.warn("fhdsaklfdls");
     }
 
 
