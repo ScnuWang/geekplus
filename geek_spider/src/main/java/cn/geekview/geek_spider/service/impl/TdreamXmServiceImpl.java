@@ -172,6 +172,7 @@ public class TdreamXmServiceImpl implements TdreamCrawlService {
                                 case "预热中":product.setProductStatus("预热中");product.setStatusValue(1);task.setCrawlStatus(1);
                                 default:product.setProductStatus("众筹异常");product.setStatusValue(5);task.setCrawlStatus(3);
                             }
+
                             product.setForeverValue(0);//是否为永久众筹（1：是  0：否）
                             product.setFocusCount(0);
                             product.setSupportCount(crowdfundingObject.getInteger("saled"));
@@ -219,6 +220,10 @@ public class TdreamXmServiceImpl implements TdreamCrawlService {
                             }
                             product.setSupportCount(supporttotal);
                             product.setFocusCount(focuscount);
+                            //检验关键字段，避免持久化到数据库报错
+                            if (product.getSupportCount()==null||product.getRasiedAmount()==null||product.getOriginalRasiedAmount()==null){
+                                throw new Exception("关键字段不能为空");
+                            }
                             //持久化到数据库
                             productMapper.insert(product);
                             if(product.getItemList()!=null&&product.getItemList().size()>0){

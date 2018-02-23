@@ -376,7 +376,10 @@ public class TdreamJdServiceImpl implements TdreamCrawlService{
                             }
                             product.setItemList(itemList);
                         }
-
+                        //检验关键字段，避免持久化到数据库报错
+                        if (product.getSupportCount()==null||product.getRasiedAmount()==null||product.getOriginalRasiedAmount()==null){
+                            throw new Exception("关键字段不能为空");
+                        }
                         //持久化到数据库
                         productMapper.insert(product);
                         if(product.getItemList()!=null&&product.getItemList().size()>0){
